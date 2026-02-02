@@ -6,8 +6,8 @@
 :root {
   --background: #f8f9fa;
   --foreground: #1a2332;
-  --card: #ffffff;
-  --card-foreground: #1a2332;
+  --card: #1a2332;
+  --card-foreground: #ffffff;
   --popover: #ffffff;
   --popover-foreground: #1a2332;
   --primary: #1e5a7c;

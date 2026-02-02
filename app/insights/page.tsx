@@ -92,18 +92,18 @@ export default function InsightsPage() {
                 <h2 className="text-2xl font-bold text-foreground mb-8">
                   Featured Insight
                 </h2>
-                <div className="relative overflow-hidden rounded-2xl border border-border p-8 lg:p-12 bg-card hover:shadow-lg hover:border-primary transition-all duration-300">
+                <div className="relative overflow-hidden rounded-2xl border border-border p-8 lg:p-12 bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300">
                   <div className="relative max-w-2xl">
-                    <span className="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary">
+                    <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white">
                       {featuredInsight.category}
                     </span>
-                    <h3 className="mt-4 text-2xl lg:text-3xl font-bold text-foreground">
+                    <h3 className="mt-4 text-2xl lg:text-3xl font-bold text-white">
                       {featuredInsight.title}
                     </h3>
-                    <p className="mt-4 text-muted-foreground leading-relaxed">
+                    <p className="mt-4 text-white/80 leading-relaxed">
                       {featuredInsight.excerpt}
                     </p>
-                    <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                    <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/80">
                       <span>{featuredInsight.author}</span>
                       <span className="hidden sm:inline">•</span>
                       <span>{formatDate(featuredInsight.created_at)}</span>
@@ -143,26 +143,7 @@ export default function InsightsPage() {
         </>
       )}
 
-      {/* CTA Section */}
-      <section className="py-16 lg:py-20 bg-secondary">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="rounded-2xl border border-border p-8 lg:p-12 text-center bg-card hover:shadow-lg hover:border-primary transition-all duration-300">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
-              Need Custom Research?
-            </h2>
-            <p className="mt-4 mx-auto max-w-xl text-muted-foreground">
-              Our team can conduct tailored research and analysis to address
-              your specific business questions and strategic needs.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">Request Custom Research</Button>
-              <Button variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary bg-transparent">
-                View Our Services
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+
     </div>
   )
 }

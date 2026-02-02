@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -57,20 +56,20 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border bg-[#21435f]">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={onCancel}>
+            <Button variant="ghost" size="sm" onClick={onCancel} className="text-white hover:bg-white/10 hover:text-white">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-foreground">
+              <h1 className="text-xl font-bold text-white">
                 {insight ? "Edit Insight" : "New Insight"}
               </h1>
             </div>
           </div>
-          <Button onClick={handleSubmit} disabled={isSaving || !formData.title}>
+          <Button onClick={handleSubmit} disabled={isSaving || !formData.title} className="bg-white text-[#21435f] hover:bg-white/90">
             {isSaving ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (
@@ -84,13 +83,13 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
       <form onSubmit={handleSubmit} className="mx-auto max-w-4xl px-6 py-8">
         <div className="grid gap-8">
           {/* Main Content */}
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardHeader>
-              <CardTitle>Insight Details</CardTitle>
+              <CardTitle className="text-white">Insight Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="title" className="text-white">Title</Label>
                 <Input
                   id="title"
                   value={formData.title}
@@ -98,12 +97,12 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                     setFormData({ ...formData, title: e.target.value })
                   }
                   placeholder="Enter insight title"
-                  className="bg-secondary border-border"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="excerpt">Excerpt</Label>
+                <Label htmlFor="excerpt" className="text-white">Excerpt</Label>
                 <Textarea
                   id="excerpt"
                   value={formData.excerpt}
@@ -112,12 +111,12 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                   }
                   placeholder="Brief summary of the insight"
                   rows={3}
-                  className="bg-secondary border-border"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="content">Content</Label>
+                <Label htmlFor="content" className="text-white">Content</Label>
                 <Textarea
                   id="content"
                   value={formData.content}
@@ -126,33 +125,33 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                   }
                   placeholder="Full insight content (Markdown supported)"
                   rows={12}
-                  className="bg-secondary border-border font-mono text-sm"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white font-mono text-sm"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Meta Information */}
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardHeader>
-              <CardTitle>Meta Information</CardTitle>
+              <CardTitle className="text-white">Meta Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category" className="text-white">Category</Label>
                   <Select
                     value={formData.category}
                     onValueChange={(value: Insight["category"]) =>
                       setFormData({ ...formData, category: value })
                     }
                   >
-                    <SelectTrigger className="bg-secondary border-border">
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#21435f] text-white border-white/20">
                       {insightCategories.map((category) => (
-                        <SelectItem key={category} value={category}>
+                        <SelectItem key={category} value={category} className="focus:bg-white/10">
                           {category}
                         </SelectItem>
                       ))}
@@ -161,19 +160,19 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="icon">Icon</Label>
+                  <Label htmlFor="icon" className="text-white">Icon</Label>
                   <Select
                     value={formData.icon_name}
                     onValueChange={(value: Insight["icon_name"]) =>
                       setFormData({ ...formData, icon_name: value })
                     }
                   >
-                    <SelectTrigger className="bg-secondary border-border">
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue placeholder="Select icon" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#21435f] text-white border-white/20">
                       {insightIcons.map((icon) => (
-                        <SelectItem key={icon.value} value={icon.value}>
+                        <SelectItem key={icon.value} value={icon.value} className="focus:bg-white/10">
                           {icon.label}
                         </SelectItem>
                       ))}
@@ -182,19 +181,19 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="author">Author</Label>
+                  <Label htmlFor="author" className="text-white">Author</Label>
                   <Select
                     value={formData.author}
                     onValueChange={(value) =>
                       setFormData({ ...formData, author: value })
                     }
                   >
-                    <SelectTrigger className="bg-secondary border-border">
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue placeholder="Select author" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#21435f] text-white border-white/20">
                       {authors.map((author) => (
-                        <SelectItem key={author} value={author}>
+                        <SelectItem key={author} value={author} className="focus:bg-white/10">
                           {author}
                         </SelectItem>
                       ))}
@@ -203,7 +202,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="read_time">Read Time</Label>
+                  <Label htmlFor="read_time" className="text-white">Read Time</Label>
                   <Input
                     id="read_time"
                     value={formData.read_time}
@@ -211,7 +210,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                       setFormData({ ...formData, read_time: e.target.value })
                     }
                     placeholder="e.g., 10 min read"
-                    className="bg-secondary border-border"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                   />
                 </div>
               </div>
@@ -219,15 +218,15 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
           </Card>
 
           {/* Publishing Options */}
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardHeader>
-              <CardTitle>Publishing Options</CardTitle>
+              <CardTitle className="text-white">Publishing Options</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label>Publish</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <Label className="text-white">Publish</Label>
+                  <p className="text-sm text-white/80">
                     Make this insight visible to the public
                   </p>
                 </div>
@@ -241,8 +240,8 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
 
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label>Featured</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <Label className="text-white">Featured</Label>
+                  <p className="text-sm text-white/80">
                     Display as the featured insight on the page (only one can be featured)
                   </p>
                 </div>

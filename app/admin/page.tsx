@@ -72,22 +72,26 @@ export default function AdminPage() {
     if (currentView === "applicants") {
       return (
         <div className="min-h-screen bg-background">
-          <div className="border-b border-border bg-secondary">
+          <div className="border-b border-border bg-[#21435f]">
             <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
               <div>
                 <Button
                   variant="ghost"
                   onClick={() => setCurrentView("menu")}
-                  className="text-foreground hover:bg-primary/10 mb-4"
+                  className="text-white hover:bg-white/10 mb-4"
                 >
                   ← Back
                 </Button>
-                <h1 className="text-xl font-bold text-foreground">Job Applications</h1>
-                <p className="text-sm text-muted-foreground">
+                <h1 className="text-xl font-bold text-white">Job Applications</h1>
+                <p className="text-sm text-white/80">
                   Review and manage candidate applications
                 </p>
               </div>
-              <Button variant="outline" onClick={handleLogout} className="border-border text-foreground hover:bg-primary/10 bg-transparent">
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                className="text-white border-white/20 hover:bg-white/10 bg-transparent shrink-0"
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>
@@ -104,15 +108,19 @@ export default function AdminPage() {
     // Main Admin Menu
     return (
       <div className="min-h-screen bg-background">
-        <div className="border-b border-border bg-card">
+        <div className="border-b border-border bg-[#21435f]">
           <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-foreground">Admin Dashboard</h1>
-              <p className="text-sm text-muted-foreground">
+              <h1 className="text-xl font-bold text-white">Admin Dashboard</h1>
+              <p className="text-sm text-white/80">
                 Ascend Advisory Content Management
               </p>
             </div>
-            <Button variant="outline" onClick={handleLogout}>
+            <Button
+              variant="outline"
+              onClick={handleLogout}
+              className="text-white border-white/20 hover:bg-white/10 bg-transparent shrink-0"
+            >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
             </Button>
@@ -125,68 +133,68 @@ export default function AdminPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card
-              className="border-border bg-card hover:border-primary/50 transition-all cursor-pointer group"
+              className="border-border bg-[#21435f] hover:border-primary/50 transition-all cursor-pointer group"
               onClick={() => setCurrentView("blog")}
             >
               <CardContent className="p-8 text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <FileText className="h-8 w-8 text-primary" />
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <FileText className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   Blog Posts
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-white/80">
                   Create, edit, and manage blog articles
                 </p>
               </CardContent>
             </Card>
 
             <Card
-              className="border-border bg-card hover:border-primary/50 transition-all cursor-pointer group"
+              className="border-border bg-[#21435f] hover:border-primary/50 transition-all cursor-pointer group"
               onClick={() => setCurrentView("insights")}
             >
               <CardContent className="p-8 text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <Lightbulb className="h-8 w-8 text-primary" />
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <Lightbulb className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   Insights
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-white/80">
                   Publish research reports and market analysis
                 </p>
               </CardContent>
             </Card>
 
             <Card
-              className="border-border bg-card hover:border-primary/50 transition-all cursor-pointer group"
+              className="border-border bg-[#21435f] hover:border-primary/50 transition-all cursor-pointer group"
               onClick={() => setCurrentView("careers")}
             >
               <CardContent className="p-8 text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <Briefcase className="h-8 w-8 text-primary" />
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <Briefcase className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   Job Openings
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-white/80">
                   Manage career opportunities
                 </p>
               </CardContent>
             </Card>
 
             <Card
-              className="border-border bg-card hover:border-primary/50 transition-all cursor-pointer group"
+              className="border-border bg-[#21435f] hover:border-primary/50 transition-all cursor-pointer group"
               onClick={() => setCurrentView("applicants")}
             >
               <CardContent className="p-8 text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <FileText className="h-8 w-8 text-primary" />
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <FileText className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   Applications
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-white/80">
                   Review job applications
                 </p>
               </CardContent>
@@ -199,44 +207,44 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
-      <Card className="w-full max-w-md border border-border bg-card">
+      <Card className="w-full max-w-md border border-border bg-[#21435f]">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-secondary">
-            <Lock className="h-6 w-6 text-primary" />
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+            <Lock className="h-6 w-6 text-white" />
           </div>
-          <CardTitle className="text-2xl font-bold text-foreground">
+          <CardTitle className="text-2xl font-bold text-white">
             Admin Access
           </CardTitle>
-          <p className="text-sm text-muted-foreground mt-2">
+          <p className="text-sm text-white/80 mt-2">
             Enter the admin password to manage content
           </p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground">Password</Label>
+              <Label htmlFor="password" className="text-white">Password</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter admin password"
-                className="bg-secondary border-border text-foreground placeholder:text-muted-foreground focus:ring-primary"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
               />
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 text-sm text-destructive">
+              <div className="flex items-center gap-2 text-sm text-red-200">
                 <AlertCircle className="h-4 w-4" />
                 <span>{error}</span>
               </div>
             )}
 
-            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button type="submit" className="w-full bg-white text-[#21435f] hover:bg-white/90">
               Access Dashboard
             </Button>
 
-            <Link href="/admin/forgot-password" className="block text-center text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/admin/forgot-password" className="block text-center text-sm text-white/70 hover:text-white transition-colors">
               Forgot password?
             </Link>
           </form>

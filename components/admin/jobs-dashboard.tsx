@@ -107,28 +107,32 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border bg-[#21435f]">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={onBack}>
+            <Button variant="ghost" size="sm" onClick={onBack} className="text-white hover:bg-white/10 hover:text-white">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-foreground">
+              <h1 className="text-xl font-bold text-white">
                 Job Openings Admin
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/80">
                 Manage career opportunities
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button onClick={handleCreate}>
+            <Button onClick={handleCreate} className="bg-white text-[#21435f] hover:bg-white/90">
               <Plus className="h-4 w-4 mr-2" />
               New Job
             </Button>
-            <Button variant="outline" onClick={onLogout}>
+            <Button
+              variant="outline"
+              onClick={onLogout}
+              className="text-white border-white/20 hover:bg-white/10 bg-transparent shrink-0"
+            >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
             </Button>
@@ -139,15 +143,15 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
       <div className="mx-auto max-w-7xl px-6 py-8">
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                  <Briefcase className="h-6 w-6 text-primary" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+                  <Briefcase className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Jobs</p>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Jobs</p>
+                  <p className="text-2xl font-bold text-white">
                     {stats.total}
                   </p>
                 </div>
@@ -155,15 +159,15 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500/10">
                   <Eye className="h-6 w-6 text-green-500" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Published</p>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Published</p>
+                  <p className="text-2xl font-bold text-white">
                     {stats.published}
                   </p>
                 </div>
@@ -171,15 +175,15 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/10">
                   <EyeOff className="h-6 w-6 text-yellow-500" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Drafts</p>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Drafts</p>
+                  <p className="text-2xl font-bold text-white">
                     {stats.drafts}
                   </p>
                 </div>
@@ -190,22 +194,22 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
 
         {/* Jobs List */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-lg font-semibold text-white">
             All Job Postings
           </h2>
 
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loader2 className="h-8 w-8 animate-spin text-white/50" />
             </div>
           ) : jobs.length === 0 ? (
-            <Card className="border-border bg-card">
+            <Card className="border-border bg-[#21435f]">
               <CardContent className="p-12 text-center">
-                <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <Briefcase className="h-12 w-12 text-white/40 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">
                   No job postings yet
                 </h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-white/70 mb-4">
                   Create your first job posting to attract talent.
                 </p>
                 <Button onClick={handleCreate}>
@@ -219,26 +223,25 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
               {jobs.map((job) => (
                 <Card
                   key={job.id}
-                  className="border-border bg-card hover:border-primary/30 transition-colors"
+                  className="border-border bg-[#21435f] hover:border-primary/50 transition-colors"
                 >
                   <CardContent className="p-4">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-foreground truncate">
+                          <h3 className="font-semibold text-white truncate">
                             {job.title}
                           </h3>
                           <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                              job.published
-                                ? "bg-green-500/10 text-green-500"
-                                : "bg-yellow-500/10 text-yellow-500"
-                            }`}
+                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${job.published
+                              ? "bg-green-500/10 text-green-500"
+                              : "bg-yellow-500/10 text-yellow-500"
+                              }`}
                           >
                             {job.published ? "Published" : "Draft"}
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-white/70">
                           <span className="flex items-center gap-1">
                             <Building className="h-3.5 w-3.5" />
                             {job.department}
@@ -262,6 +265,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
                           size="sm"
                           onClick={() => handleTogglePublish(job.id)}
                           disabled={actionLoading === job.id}
+                          className="text-white/80 hover:text-white hover:bg-white/10"
                         >
                           {actionLoading === job.id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -281,6 +285,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleEdit(job)}
+                          className="text-white/80 hover:text-white hover:bg-white/10"
                         >
                           <Edit className="h-4 w-4 mr-1" />
                           Edit
@@ -288,7 +293,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-destructive hover:text-destructive"
+                          className="text-red-400 hover:text-red-300 hover:bg-red-400/10"
                           onClick={() => handleDelete(job.id)}
                           disabled={actionLoading === job.id}
                         >

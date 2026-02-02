@@ -112,26 +112,30 @@ export function AdminDashboard({ onLogout, onBack }: AdminDashboardProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border bg-[#21435f]">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={onBack}>
+            <Button variant="ghost" size="sm" onClick={onBack} className="text-white hover:bg-white/10 hover:text-white">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-foreground">Blog Admin</h1>
-              <p className="text-sm text-muted-foreground">
+              <h1 className="text-xl font-bold text-white">Blog Admin</h1>
+              <p className="text-sm text-white/80">
                 Manage your blog posts
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button onClick={handleCreateNew}>
+            <Button onClick={handleCreateNew} className="bg-white text-[#21435f] hover:bg-white/90">
               <Plus className="h-4 w-4 mr-2" />
               New Post
             </Button>
-            <Button variant="outline" onClick={onLogout}>
+            <Button
+              variant="outline"
+              onClick={onLogout}
+              className="text-white border-white/20 hover:bg-white/10 bg-transparent shrink-0"
+            >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
             </Button>
@@ -142,47 +146,47 @@ export function AdminDashboard({ onLogout, onBack }: AdminDashboardProps) {
       {/* Stats */}
       <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <FileText className="h-6 w-6 text-primary" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/10">
+                  <FileText className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-2xl font-bold text-white">
                     {stats.total}
                   </p>
-                  <p className="text-sm text-muted-foreground">Total Posts</p>
+                  <p className="text-sm text-white/80">Total Posts</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
                   <Eye className="h-6 w-6 text-green-500" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-2xl font-bold text-white">
                     {stats.published}
                   </p>
-                  <p className="text-sm text-muted-foreground">Published</p>
+                  <p className="text-sm text-white/80">Published</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-500/10">
                   <EyeOff className="h-6 w-6 text-yellow-500" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-2xl font-bold text-white">
                     {stats.drafts}
                   </p>
-                  <p className="text-sm text-muted-foreground">Drafts</p>
+                  <p className="text-sm text-white/80">Drafts</p>
                 </div>
               </div>
             </CardContent>
@@ -190,42 +194,41 @@ export function AdminDashboard({ onLogout, onBack }: AdminDashboardProps) {
         </div>
 
         {/* Posts List */}
-        <Card className="border-border bg-card">
+        <Card className="border-border bg-[#21435f]">
           <CardContent className="p-0">
-            <div className="border-b border-border px-6 py-4">
-              <h2 className="font-semibold text-foreground">All Posts</h2>
+            <div className="border-b border-white/10 px-6 py-4">
+              <h2 className="font-semibold text-white">All Posts</h2>
             </div>
             {isLoading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-6 w-6 animate-spin text-white/50" />
               </div>
             ) : posts.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">No posts yet. Create your first post!</p>
+                <p className="text-white/80">No posts yet. Create your first post!</p>
               </div>
             ) : (
-              <div className="divide-y divide-border">
+              <div className="divide-y divide-white/10">
                 {posts.map((post) => (
                   <div
                     key={post.id}
-                    className="px-6 py-4 flex items-center justify-between hover:bg-secondary/50 transition-colors"
+                    className="px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
                   >
                     <div className="flex-1 min-w-0 pr-4">
                       <div className="flex items-center gap-3">
-                        <h3 className="font-medium text-foreground truncate">
+                        <h3 className="font-medium text-white truncate">
                           {post.title}
                         </h3>
                         <span
-                          className={`flex-shrink-0 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            post.published
-                              ? "bg-green-500/10 text-green-500"
-                              : "bg-yellow-500/10 text-yellow-500"
-                          }`}
+                          className={`flex-shrink-0 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${post.published
+                            ? "bg-green-500/10 text-green-500"
+                            : "bg-yellow-500/10 text-yellow-500"
+                            }`}
                         >
                           {post.published ? "Published" : "Draft"}
                         </span>
                       </div>
-                      <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="mt-1 flex items-center gap-4 text-sm text-white/60">
                         <span>{post.author}</span>
                         <span>{formatDate(post.created_at)}</span>
                         <span>{post.read_time}</span>
@@ -236,6 +239,7 @@ export function AdminDashboard({ onLogout, onBack }: AdminDashboardProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleTogglePublish(post.id)}
+                        className="text-white/80 hover:text-white hover:bg-white/10"
                         title={post.published ? "Unpublish" : "Publish"}
                       >
                         {post.published ? (
@@ -248,6 +252,7 @@ export function AdminDashboard({ onLogout, onBack }: AdminDashboardProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEdit(post)}
+                        className="text-white/80 hover:text-white hover:bg-white/10"
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
@@ -255,7 +260,7 @@ export function AdminDashboard({ onLogout, onBack }: AdminDashboardProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDelete(post.id)}
-                        className="text-destructive hover:text-destructive"
+                        className="text-red-400 hover:text-red-300 hover:bg-red-400/10"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

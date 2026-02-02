@@ -174,12 +174,12 @@ export default function CareersPage() {
             {values.map((value) => (
               <div
                 key={value.title}
-                className="rounded-xl border border-border p-6 bg-card hover:shadow-lg hover:border-primary transition-all duration-300"
+                className="rounded-xl border border-border p-6 bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300"
               >
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-lg font-semibold text-white">
                   {value.title}
                 </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm text-white/80">
                   {value.description}
                 </p>
               </div>
@@ -191,18 +191,18 @@ export default function CareersPage() {
       {/* CTA Section */}
       <section className="py-16 lg:py-20 bg-secondary">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="rounded-2xl border border-border p-8 lg:p-12 text-center bg-card hover:shadow-lg hover:border-primary transition-all duration-300">
-            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
+          <div className="rounded-2xl border border-border p-8 lg:p-12 text-center bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300">
+            <h2 className="text-2xl lg:text-3xl font-bold text-white">
               {"Don't See the Right Role?"}
             </h2>
-            <p className="mt-4 mx-auto max-w-xl text-muted-foreground">
+            <p className="mt-4 mx-auto max-w-xl text-white/80">
               {
                 "We're always looking for talented individuals. Send us your CV and we'll keep you in mind for future opportunities."
               }
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">Send Your CV</Button>
-              <Button variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary bg-transparent">
+              <Button variant="outline" size="lg" className="border-border text-white hover:bg-white/10 bg-transparent">
                 Contact HR Team
               </Button>
             </div>

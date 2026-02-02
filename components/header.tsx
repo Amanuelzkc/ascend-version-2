@@ -16,14 +16,14 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8 bg-card">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8 bg-white">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
-            <Image 
-              src="/ascend-logo.png" 
-              alt="Ascend Advisory Logo" 
-              width={140} 
+            <Image
+              src="/ascend-logo.png"
+              alt="Ascend Advisory Logo"
+              width={140}
               height={50}
               priority
               className="h-12 w-auto"
@@ -56,11 +56,6 @@ export function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href="#contact">
-              Contact Us
-            </Link>
-          </Button>
         </div>
       </nav>
 
@@ -78,13 +73,7 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
-            <div className="pt-2">
-              <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                <Link href="#contact">
-                  Contact Us
-                </Link>
-              </Button>
-            </div>
+
           </div>
         </div>
       )}

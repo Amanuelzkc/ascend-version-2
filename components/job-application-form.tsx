@@ -56,7 +56,7 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
+
     // Validation
     if (!formData.fullName || !formData.email || !formData.phone || !formData.currentRole) {
       setError("Please fill in all required fields")
@@ -121,7 +121,7 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
 
   if (submitted) {
     return (
-      <Card className="border-0 max-w-2xl mx-auto" style={{ backgroundColor: '#20445c' }}>
+      <Card className="border-0 max-w-2xl mx-auto bg-[#21435f]">
         <CardContent className="p-8">
           <div className="text-center">
             <div className="flex justify-center mb-6">
@@ -147,7 +147,7 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
   }
 
   return (
-    <Card className="border-0 max-w-2xl mx-auto" style={{ backgroundColor: '#20445c' }}>
+    <Card className="border-0 max-w-2xl mx-auto bg-[#21435f]">
       <CardContent className="p-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-white mb-2">Apply for Position</h2>

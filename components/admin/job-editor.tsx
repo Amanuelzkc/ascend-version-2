@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -120,14 +119,14 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border bg-[#21435f]">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-white/10 hover:text-white">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
-            <h1 className="text-xl font-bold text-foreground">
+            <h1 className="text-xl font-bold text-white">
               {job ? "Edit Job Posting" : "Create Job Posting"}
             </h1>
           </div>
@@ -137,26 +136,26 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
       <div className="mx-auto max-w-4xl px-6 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Info */}
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardHeader>
-              <CardTitle className="text-lg">Basic Information</CardTitle>
+              <CardTitle className="text-lg text-white">Basic Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="title">Job Title</Label>
+                  <Label htmlFor="title" className="text-white">Job Title</Label>
                   <Input
                     id="title"
                     value={formData.title}
                     onChange={(e) => handleTitleChange(e.target.value)}
                     placeholder="e.g., Senior Financial Analyst"
                     required
-                    className="bg-input border-border"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="slug">URL Slug</Label>
+                  <Label htmlFor="slug" className="text-white">URL Slug</Label>
                   <Input
                     id="slug"
                     value={formData.slug}
@@ -165,24 +164,24 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                     }
                     placeholder="senior-financial-analyst"
                     required
-                    className="bg-input border-border"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="department">Department</Label>
+                  <Label htmlFor="department" className="text-white">Department</Label>
                   <Select
                     value={formData.department}
                     onValueChange={(value) =>
                       setFormData((prev) => ({ ...prev, department: value }))
                     }
                   >
-                    <SelectTrigger className="bg-input border-border">
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#21435f] text-white border-white/20">
                       {DEPARTMENTS.map((dept) => (
-                        <SelectItem key={dept} value={dept}>
+                        <SelectItem key={dept} value={dept} className="focus:bg-white/10">
                           {dept}
                         </SelectItem>
                       ))}
@@ -191,7 +190,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
+                  <Label htmlFor="location" className="text-white">Location</Label>
                   <Input
                     id="location"
                     value={formData.location}
@@ -203,24 +202,24 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                     }
                     placeholder="Addis Ababa, Ethiopia"
                     required
-                    className="bg-input border-border"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="type">Job Type</Label>
+                  <Label htmlFor="type" className="text-white">Job Type</Label>
                   <Select
                     value={formData.type}
                     onValueChange={(value) =>
                       setFormData((prev) => ({ ...prev, type: value }))
                     }
                   >
-                    <SelectTrigger className="bg-input border-border">
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#21435f] text-white border-white/20">
                       {JOB_TYPES.map((type) => (
-                        <SelectItem key={type} value={type}>
+                        <SelectItem key={type} value={type} className="focus:bg-white/10">
                           {type}
                         </SelectItem>
                       ))}
@@ -229,19 +228,19 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="experience">Experience Level</Label>
+                  <Label htmlFor="experience" className="text-white">Experience Level</Label>
                   <Select
                     value={formData.experience}
                     onValueChange={(value) =>
                       setFormData((prev) => ({ ...prev, experience: value }))
                     }
                   >
-                    <SelectTrigger className="bg-input border-border">
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[#21435f] text-white border-white/20">
                       {EXPERIENCE_LEVELS.map((level) => (
-                        <SelectItem key={level} value={level}>
+                        <SelectItem key={level} value={level} className="focus:bg-white/10">
                           {level}
                         </SelectItem>
                       ))}
@@ -250,7 +249,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="salary">Salary Range (Optional)</Label>
+                  <Label htmlFor="salary" className="text-white">Salary Range (Optional)</Label>
                   <Input
                     id="salary"
                     value={formData.salary_range}
@@ -261,13 +260,13 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                       }))
                     }
                     placeholder="e.g., Competitive or ETB 50,000 - 70,000"
-                    className="bg-input border-border"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Job Description</Label>
+                <Label htmlFor="description" className="text-white">Job Description</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -280,16 +279,16 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   placeholder="Describe the role and what the candidate will be doing..."
                   rows={4}
                   required
-                  className="bg-input border-border"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Requirements */}
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardHeader>
-              <CardTitle className="text-lg">Requirements</CardTitle>
+              <CardTitle className="text-lg text-white">Requirements</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -298,9 +297,9 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   .map((req, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-2 bg-secondary rounded-lg px-3 py-2"
+                      className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2"
                     >
-                      <span className="flex-1 text-sm text-foreground">
+                      <span className="flex-1 text-sm text-white">
                         {req}
                       </span>
                       <Button
@@ -308,7 +307,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => removeRequirement(index)}
-                        className="h-6 w-6 p-0"
+                        className="h-6 w-6 p-0 text-white/70 hover:text-white"
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -320,7 +319,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   value={newRequirement}
                   onChange={(e) => setNewRequirement(e.target.value)}
                   placeholder="Add a requirement..."
-                  className="bg-input border-border"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault()
@@ -328,7 +327,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                     }
                   }}
                 />
-                <Button type="button" variant="outline" onClick={addRequirement}>
+                <Button type="button" variant="outline" onClick={addRequirement} className="border-white/20 text-white hover:bg-white/10">
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
@@ -336,9 +335,9 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
           </Card>
 
           {/* Responsibilities */}
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardHeader>
-              <CardTitle className="text-lg">Responsibilities</CardTitle>
+              <CardTitle className="text-lg text-white">Responsibilities</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -347,9 +346,9 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   .map((resp, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-2 bg-secondary rounded-lg px-3 py-2"
+                      className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2"
                     >
-                      <span className="flex-1 text-sm text-foreground">
+                      <span className="flex-1 text-sm text-white">
                         {resp}
                       </span>
                       <Button
@@ -357,7 +356,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => removeResponsibility(index)}
-                        className="h-6 w-6 p-0"
+                        className="h-6 w-6 p-0 text-white/70 hover:text-white"
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -369,7 +368,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   value={newResponsibility}
                   onChange={(e) => setNewResponsibility(e.target.value)}
                   placeholder="Add a responsibility..."
-                  className="bg-input border-border"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault()
@@ -381,6 +380,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   type="button"
                   variant="outline"
                   onClick={addResponsibility}
+                  className="border-white/20 text-white hover:bg-white/10"
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -389,14 +389,14 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
           </Card>
 
           {/* Publishing */}
-          <Card className="border-border bg-card">
+          <Card className="border-border bg-[#21435f]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-semibold text-white">
                     Publish Job Posting
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-white/80">
                     When published, this job will be visible on the careers page
                   </p>
                 </div>
@@ -412,10 +412,10 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
 
           {/* Actions */}
           <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button type="button" variant="outline" onClick={onClose} className="border-white/20 text-white hover:bg-white/10 bg-transparent">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="bg-white text-[#21435f] hover:bg-white/90">
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />

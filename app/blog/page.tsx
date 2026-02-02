@@ -1,5 +1,6 @@
 import { BlogCard } from "@/components/blog-card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { getPublishedPosts, formatDate } from "@/lib/services/blog-service"
 
 export default async function BlogPage() {
@@ -28,7 +29,7 @@ export default async function BlogPage() {
       <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           {posts.length > 0 ? (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 ">
               {posts.map((post) => (
                 <BlogCard
                   key={post.id}
@@ -71,15 +72,17 @@ export default async function BlogPage() {
             <p className="mt-4 text-muted-foreground">
               Subscribe to our newsletter for the latest insights and updates delivered to your inbox.
             </p>
-            <form className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 max-w-md rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <Button type="submit" size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                Subscribe
-              </Button>
+            <form className="mt-8">
+              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="bg-white text-gray-900 placeholder:text-gray-500 border-white/20"
+                />
+                <Button type="submit" className="bg-[#21435f] text-white hover:bg-[#21435f]/90 font-semibold">
+                  Subscribe
+                </Button>
+              </div>
             </form>
           </div>
         </div>

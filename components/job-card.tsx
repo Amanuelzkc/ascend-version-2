@@ -22,21 +22,21 @@ export function JobCard({ job }: { job: Job }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <Card className="border border-border bg-card hover:shadow-lg hover:border-primary transition-all duration-300">
+    <Card className="border border-border bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300">
       <CardContent className="p-0">
         <div className="p-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-3 mb-2">
-                <span className="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary">
+                <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white">
                   {job.department}
                 </span>
-                <span className="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary">
+                <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white">
                   {job.type}
                 </span>
               </div>
-              <h3 className="text-xl font-semibold text-foreground">{job.title}</h3>
-              <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <h3 className="text-xl font-semibold text-white">{job.title}</h3>
+              <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80">
                 <span className="flex items-center gap-1.5">
                   <MapPin className="h-4 w-4" />
                   {job.location}
@@ -55,7 +55,7 @@ export function JobCard({ job }: { job: Job }) {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="flex-shrink-0 hover:bg-secondary text-foreground"
+                className="flex-shrink-0 hover:bg-white/10 text-white"
               >
                 {isExpanded ? (
                   <ChevronUp className="h-5 w-5" />
@@ -72,19 +72,19 @@ export function JobCard({ job }: { job: Job }) {
 
         {/* Expanded Content */}
         {isExpanded && (
-          <div className="border-t border-border px-6 py-6 bg-secondary">
+          <div className="border-t border-border px-6 py-6 bg-black/20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div>
-                <h4 className="text-sm font-semibold text-foreground mb-3">About the Role</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <h4 className="text-sm font-semibold text-white mb-3">About the Role</h4>
+                <p className="text-sm text-white/80 leading-relaxed">
                   {job.description}
                 </p>
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-foreground mb-3">Requirements</h4>
+                <h4 className="text-sm font-semibold text-white mb-3">Requirements</h4>
                 <ul className="space-y-2">
                   {job.requirements.map((req, index) => (
-                    <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <li key={index} className="flex items-start gap-2 text-sm text-white/80">
                       <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                       <span>{req}</span>
                     </li>

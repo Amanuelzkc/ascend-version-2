@@ -1,0 +1,32 @@
+Creating a "laravel/laravel" project at "./backend"
+Installing laravel/laravel (v12.11.2)
+  - Downloading laravel/laravel (v12.11.2)
+  - Installing laravel/laravel (v12.11.2): Extracting archive
+    Install of laravel/laravel failed
+
+In ZipDownloader.php line 193:
+                     
+  Failed to extract  
+   laravel/laravel:  
+   (7) C:\Program F  
+  iles\7-Zip\7z.EXE  
+   x -bb0 -y C:\Use  
+  rs\PAVILION\Deskt  
+  op\proj\next js\a  
+  scend\asecend v2\  
+  ascend-version-2\  
+  backend\vendor\co  
+  mposer\tmp-df3d11  
+  476d372af6adbac31  
+  6b46295e1.zip -oC  
+  :\Users\PAVILION\  
+  Desktop\proj\next  
+   js\ascend\asecen  
+  d v2\ascend-versi  
+  on-2\backend\vend  
+  or\composer\4f561  
+  173                
+                     
+
+create-project [-s|--stability STABILITY] [--prefer-source] [--prefer-dist] [--prefer-install PREFER-INSTALL] [--repository REPOSITORY] [--repository-url REPOSITORY-URL] [--add-repository] [--dev] [--no-dev] [--no-custom-installers] [--no-scripts] [--no-progress] [--no-secure-http] [--keep-vcs] [--remove-vcs] [--no-install] [--no-audit] [--audit-format AUDIT-FORMAT] [--no-security-blocking] [--ignore-platform-req IGNORE-PLATFORM-REQ] [--ignore-platform-reqs] [--ask] [--] [<package> [<directory> [<version>]]]
+
