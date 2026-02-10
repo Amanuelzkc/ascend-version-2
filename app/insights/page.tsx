@@ -9,8 +9,8 @@ import { Insight } from "@/lib/types/insight"
 import {
   getPublishedInsights,
   getFeaturedInsight,
-  formatDate,
 } from "@/lib/services/insight-service"
+import { formatDate } from "@/lib/utils"
 
 const stats = [
   { label: "Research Reports Published", value: "50+" },
@@ -64,7 +64,7 @@ export default function InsightsPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="border-y border-border bg-secondary">
+      <section className="border-y border-border">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12">
             {stats.map((stat) => (
@@ -92,18 +92,18 @@ export default function InsightsPage() {
                 <h2 className="text-2xl font-bold text-foreground mb-8">
                   Featured Insight
                 </h2>
-                <div className="relative overflow-hidden rounded-2xl border border-border p-8 lg:p-12 bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300">
+                <div className="relative overflow-hidden rounded-2xl border border-border p-8 lg:p-12 bg-card text-card-foreground hover:shadow-lg hover:border-primary transition-all duration-300">
                   <div className="relative max-w-2xl">
-                    <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white">
+                    <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                       {featuredInsight.category}
                     </span>
-                    <h3 className="mt-4 text-2xl lg:text-3xl font-bold text-white">
+                    <h3 className="mt-4 text-2xl lg:text-3xl font-bold">
                       {featuredInsight.title}
                     </h3>
-                    <p className="mt-4 text-white/80 leading-relaxed">
+                    <p className="mt-4 text-muted-foreground leading-relaxed">
                       {featuredInsight.excerpt}
                     </p>
-                    <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/80">
+                    <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                       <span>{featuredInsight.author}</span>
                       <span className="hidden sm:inline">•</span>
                       <span>{formatDate(featuredInsight.created_at)}</span>

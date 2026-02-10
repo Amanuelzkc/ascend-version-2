@@ -12,3 +12,66 @@ model User {
   email String  @unique
   name  String?
 }
+
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  excerpt   String   @db.Text
+  content   String   @db.Text
+  author    String
+  read_time String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Insight {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  excerpt   String   @db.Text
+  content   String   @db.Text
+  category  String
+  icon_name String
+  author    String
+  read_time String
+  published Boolean  @default(false)
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Job {
+  id               Int           @id @default(autoincrement())
+  title            String
+  slug             String        @unique
+  department       String
+  location         String
+  type             String
+  experience       String        @default("Not specified")
+  description      String        @db.Text
+  requirements     String?       @db.Text // Stored as JSON string
+  responsibilities String?       @db.Text // Stored as JSON string
+  salary_range     String?
+  published        Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  applications     Application[]
+}
+
+model Application {
+  id          Int      @id @default(autoincrement())
+  jobId       Int
+  job         Job      @relation(fields: [jobId], references: [id])
+  fullName    String
+  email       String
+  phone       String
+  location    String?
+  currentRole String
+  experience  String
+  coverLetter String?  @db.Text
+  resumeUrl   String
+  status      String   @default("Pending") // Pending, Reviewed, Interview, Rejected, Hired
+  createdAt   DateTime @default(now())
+}

@@ -56,7 +56,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="border-b border-border bg-[#21435f]">
+      <div className="border-b border-border bg-[#334155]">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={onCancel} className="text-white hover:bg-white/10 hover:text-white">
@@ -69,7 +69,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
               </h1>
             </div>
           </div>
-          <Button onClick={handleSubmit} disabled={isSaving || !formData.title} className="bg-white text-[#21435f] hover:bg-white/90">
+          <Button onClick={handleSubmit} disabled={isSaving || !formData.title} className="bg-white text-[#334155] hover:bg-white/90">
             {isSaving ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (
@@ -83,7 +83,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
       <form onSubmit={handleSubmit} className="mx-auto max-w-4xl px-6 py-8">
         <div className="grid gap-8">
           {/* Main Content */}
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-white">Insight Details</CardTitle>
             </CardHeader>
@@ -132,7 +132,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
           </Card>
 
           {/* Meta Information */}
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-white">Meta Information</CardTitle>
             </CardHeader>
@@ -149,7 +149,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                     <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#21435f] text-white border-white/20">
+                    <SelectContent className="bg-[#334155] text-white border-white/20">
                       {insightCategories.map((category) => (
                         <SelectItem key={category} value={category} className="focus:bg-white/10">
                           {category}
@@ -170,7 +170,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                     <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue placeholder="Select icon" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#21435f] text-white border-white/20">
+                    <SelectContent className="bg-[#334155] text-white border-white/20">
                       {insightIcons.map((icon) => (
                         <SelectItem key={icon.value} value={icon.value} className="focus:bg-white/10">
                           {icon.label}
@@ -191,7 +191,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                     <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue placeholder="Select author" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#21435f] text-white border-white/20">
+                    <SelectContent className="bg-[#334155] text-white border-white/20">
                       {authors.map((author) => (
                         <SelectItem key={author} value={author} className="focus:bg-white/10">
                           {author}
@@ -218,7 +218,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
           </Card>
 
           {/* Publishing Options */}
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-white">Publishing Options</CardTitle>
             </CardHeader>
@@ -235,6 +235,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                   onCheckedChange={(checked) =>
                     setFormData({ ...formData, published: checked })
                   }
+                  className="data-[state=checked]:bg-white data-[state=unchecked]:bg-white/30"
                 />
               </div>
 
@@ -250,6 +251,7 @@ export function InsightEditor({ insight, onSave, onCancel }: InsightEditorProps)
                   onCheckedChange={(checked) =>
                     setFormData({ ...formData, featured: checked })
                   }
+                  className="data-[state=checked]:bg-white data-[state=unchecked]:bg-white/30"
                 />
               </div>
             </CardContent>

@@ -107,7 +107,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
-      <div className="border-b border-border bg-[#21435f]">
+      <div className="border-b border-border bg-[#334155]">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={onBack} className="text-white hover:bg-white/10 hover:text-white">
@@ -124,7 +124,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button onClick={handleCreate} className="bg-white text-[#21435f] hover:bg-white/90">
+            <Button onClick={handleCreate} className="bg-white text-[#334155] hover:bg-white/90">
               <Plus className="h-4 w-4 mr-2" />
               New Job
             </Button>
@@ -143,7 +143,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
       <div className="mx-auto max-w-7xl px-6 py-8">
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
@@ -159,7 +159,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500/10">
@@ -175,7 +175,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/10">
@@ -203,7 +203,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
               <Loader2 className="h-8 w-8 animate-spin text-white/50" />
             </div>
           ) : jobs.length === 0 ? (
-            <Card className="border-border bg-[#21435f]">
+            <Card className="border-border bg-[#334155]">
               <CardContent className="p-12 text-center">
                 <Briefcase className="h-12 w-12 text-white/40 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-white mb-2">
@@ -223,7 +223,7 @@ export function JobsDashboard({ onLogout, onBack }: JobsDashboardProps) {
               {jobs.map((job) => (
                 <Card
                   key={job.id}
-                  className="border-border bg-[#21435f] hover:border-primary/50 transition-colors"
+                  className="border-border bg-[#334155] hover:border-primary/50 transition-colors"
                 >
                   <CardContent className="p-4">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">

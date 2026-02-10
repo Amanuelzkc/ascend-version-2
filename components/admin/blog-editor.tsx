@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { ArrowLeft, Save } from "lucide-react"
 import { BlogPost, CreateBlogPost, AUTHORS } from "@/lib/types/blog"
-import { generateSlug } from "@/lib/services/blog-service"
+import { generateSlug } from "@/lib/utils"
 
 interface BlogEditorProps {
   post: BlogPost | null
@@ -48,7 +48,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Editor Header */}
-      <div className="border-b border-border bg-[#21435f] sticky top-0 z-10">
+      <div className="border-b border-border bg-[#334155] sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={onCancel} className="text-white hover:bg-white/10 hover:text-white">
@@ -70,9 +70,10 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                 id="published"
                 checked={published}
                 onCheckedChange={setPublished}
+                className="data-[state=checked]:bg-white data-[state=unchecked]:bg-white/30"
               />
             </div>
-            <Button onClick={handleSubmit} disabled={isSaving} className="bg-white text-[#21435f] hover:bg-white/90">
+            <Button onClick={handleSubmit} disabled={isSaving} className="bg-white text-[#334155] hover:bg-white/90">
               <Save className="h-4 w-4 mr-2" />
               {isSaving ? "Saving..." : "Save Post"}
             </Button>
@@ -83,7 +84,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
       {/* Editor Form */}
       <div className="mx-auto max-w-4xl px-6 py-8">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-lg text-white">Post Details</CardTitle>
             </CardHeader>
@@ -127,7 +128,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                     className="w-full rounded-md border border-white/20 bg-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-white"
                   >
                     {AUTHORS.map((a) => (
-                      <option key={a} value={a} className="bg-[#21435f] text-white">
+                      <option key={a} value={a} className="bg-[#334155] text-white">
                         {a}
                       </option>
                     ))}
@@ -148,7 +149,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-lg text-white">Content</CardTitle>
             </CardHeader>

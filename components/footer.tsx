@@ -1,5 +1,7 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Mail, Phone, MapPin } from "lucide-react"
+import ascend from "@/asset/ascend.png";
 
 const navigation = {
   services: [
@@ -18,13 +20,28 @@ const navigation = {
 
 export function Footer() {
   return (
-    <footer className="bg-[#21435f] border-t border-white/10">
+    <footer className="bg-[#334155] border-t border-white/10">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href="https://ascendadvisory.vercel.app/" className="text-xl font-semibold text-white">
-              Ascend <span className="text-primary">Advisory</span>
+            <Link href="https://ascendadvisory.vercel.app/" className="flex items-center gap-4">
+              <div className="relative h-14 w-14 shrink-0 lg:h-16 lg:w-16">
+                <Image
+                  src={ascend}
+                  alt="Ascend Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <div className="flex flex-col justify-center leading-tight">
+                <span className="text-xl font-bold tracking-tight text-white">
+                  Ascend
+                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">
+                  Finance and Advisory
+                </span>
+              </div>
             </Link>
             <p className="mt-4 text-sm text-white/80 leading-relaxed">
               Expert accounting and advisory services designed to help your business grow with confidence and clarity.
@@ -70,7 +87,7 @@ export function Footer() {
             <h3 className="text-sm font-semibold text-white">Contact</h3>
             <ul className="mt-4 space-y-3">
               <li className="flex items-start gap-3">
-                <Mail className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                <Mail className="h-5 w-5 text-white dark:text-white flex-shrink-0 mt-0.5" />
                 <a
                   href="mailto:Bemnet.abebe.et@gmail.com"
                   className="text-sm text-white/80 hover:text-white transition-colors"
@@ -79,7 +96,7 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <Phone className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                <Phone className="h-5 w-5 text-white dark:text-white flex-shrink-0 mt-0.5" />
                 <a
                   href="tel:+251943071109"
                   className="text-sm text-white/80 hover:text-white transition-colors"
@@ -88,7 +105,7 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                <MapPin className="h-5 w-5 text-white dark:text-white flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-white/80">
                   Addis Ababa, Ethiopia<br />
                   Infront of Bole Medhanealem<br />
@@ -101,7 +118,7 @@ export function Footer() {
 
         <div className="mt-12 border-t border-white/10 pt-8">
           <p className="text-center text-sm text-white/60">
-            &copy; {new Date().getFullYear()} Ascend Accounting and Advisory. All rights reserved.
+            &copy; {new Date().getFullYear()} Ascend Finance and Advisory. All rights reserved.
           </p>
         </div>
       </div>

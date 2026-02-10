@@ -1,7 +1,8 @@
 import { BlogCard } from "@/components/blog-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { getPublishedPosts, formatDate } from "@/lib/services/blog-service"
+import { getPublishedPosts } from "@/lib/services/blog-service"
+import { formatDate } from "@/lib/utils"
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts()
@@ -63,7 +64,7 @@ export default async function BlogPage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 lg:py-20 bg-secondary">
+      <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
@@ -79,7 +80,7 @@ export default async function BlogPage() {
                   placeholder="Enter your email"
                   className="bg-white text-gray-900 placeholder:text-gray-500 border-white/20"
                 />
-                <Button type="submit" className="bg-[#21435f] text-white hover:bg-[#21435f]/90 font-semibold">
+                <Button type="submit" className="bg-[#334155] text-white hover:bg-[#334155]/90 font-semibold">
                   Subscribe
                 </Button>
               </div>

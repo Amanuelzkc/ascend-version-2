@@ -2,12 +2,13 @@
 
 import React from "react"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ArrowLeft, Calendar, User, Clock, Share2, Download } from 'lucide-react'
-import { getInsightBySlug, formatDate } from '@/lib/services/insight-service'
+import { getInsightBySlug } from '@/lib/services/insight-service'
+import { formatDate } from '@/lib/utils'
 import { Insight } from '@/lib/types/insight'
 import {
   TrendingUp,
@@ -27,19 +28,20 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   FileText,
 }
 
-export default function InsightPage({ params }: { params: { slug: string } }) {
+export default function InsightPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const [insight, setInsight] = useState<Insight | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     window.scrollTo(0, 0)
     async function fetchInsight() {
-      const data = await getInsightBySlug(params.slug)
+      const data = await getInsightBySlug(slug)
       setInsight(data)
       setLoading(false)
     }
     fetchInsight()
-  }, [params.slug])
+  }, [slug])
 
   if (loading) {
     return (
@@ -81,11 +83,11 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
               <Icon className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <span className="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary">
+              <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                 {insight.category}
               </span>
             </div>
@@ -113,30 +115,30 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Main Content */}
-        <Card className="border border-border bg-card p-8 lg:p-12 mb-12">
+        <Card className="border border-border bg-card text-card-foreground p-8 lg:p-12 mb-12">
           <div className="space-y-6">
             <div
-              className="prose prose-sm sm:prose lg:prose-lg max-w-none text-foreground"
+              className="prose prose-sm sm:prose lg:prose-lg max-w-none"
               dangerouslySetInnerHTML={{
                 __html: insight.content
                   .split('\n')
                   .map((line) => {
                     if (line.startsWith('# ')) {
-                      return `<h1 class="text-3xl font-bold mt-8 mb-4 text-foreground">${line.replace('# ', '')}</h1>`
+                      return `<h1 class="text-3xl font-bold mt-8 mb-4">${line.replace('# ', '')}</h1>`
                     }
                     if (line.startsWith('## ')) {
-                      return `<h2 class="text-2xl font-semibold mt-6 mb-3 text-foreground">${line.replace('## ', '')}</h2>`
+                      return `<h2 class="text-2xl font-semibold mt-6 mb-3">${line.replace('## ', '')}</h2>`
                     }
                     if (line.startsWith('### ')) {
-                      return `<h3 class="text-xl font-semibold mt-4 mb-2 text-foreground">${line.replace('### ', '')}</h3>`
+                      return `<h3 class="text-xl font-semibold mt-4 mb-2">${line.replace('### ', '')}</h3>`
                     }
                     if (line.startsWith('- ')) {
-                      return `<li class="ml-6 text-muted-foreground">${line.replace('- ', '')}</li>`
+                      return `<li class="ml-6">${line.replace('- ', '')}</li>`
                     }
                     if (line.trim() === '') {
                       return '<div class="h-2"></div>'
                     }
-                    return `<p class="text-muted-foreground leading-relaxed">${line}</p>`
+                    return `<p class="leading-relaxed">${line}</p>`
                   })
                   .join(''),
               }}
@@ -157,7 +159,7 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Key Takeaways */}
-        <div className="my-12 p-8 bg-secondary rounded-lg border border-border">
+        <div className="my-12 p-8 bg-card rounded-lg border border-border">
           <h2 className="text-xl font-semibold text-foreground mb-4">Key Takeaways</h2>
           <ul className="space-y-3">
             <li className="flex items-start gap-3">

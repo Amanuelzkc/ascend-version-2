@@ -2,8 +2,10 @@ import React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { CursorGlow } from "@/components/cursor-glow"
 import "./globals.css"
 
 const _inter = Inter({ subsets: ["latin"] })
@@ -38,12 +40,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <Header />
-        <main className="pt-[73px]">{children}</main>
-        <Footer />
-        <Analytics />
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <CursorGlow />
+          <Header />
+          <main className="pt-[73px]">{children}</main>
+          <Footer />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )

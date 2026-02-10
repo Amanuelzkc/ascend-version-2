@@ -14,7 +14,7 @@ interface BlogPost {
 
 export function BlogCard({ post }: { post: BlogPost }) {
   return (
-    <Card className="group overflow-hidden border border-border bg-[#21435f] hover:shadow-lg hover:border-primary hover:-translate-y-1 transition-all duration-300">
+    <Card className="group overflow-hidden border border-border bg-[#334155] hover:shadow-lg hover:border-primary hover:-translate-y-1 transition-all duration-300">
       <CardContent className="p-0">
         {/* Date Header */}
         <div className="flex items-center justify-end px-6 pt-6">

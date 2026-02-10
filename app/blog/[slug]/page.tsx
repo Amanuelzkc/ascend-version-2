@@ -1,26 +1,28 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ArrowLeft, Calendar, User, Clock, Share2 } from 'lucide-react'
-import { getPostBySlug, formatDate } from '@/lib/services/blog-service'
+import { getPostBySlug } from '@/lib/services/blog-service'
+import { formatDate } from '@/lib/utils'
 import { BlogPost } from '@/lib/types/blog'
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     window.scrollTo(0, 0)
     async function fetchPost() {
-      const data = await getPostBySlug(params.slug)
+      const data = await getPostBySlug(slug)
       setPost(data)
       setLoading(false)
     }
     fetchPost()
-  }, [params.slug])
+  }, [slug])
 
   if (loading) {
     return (
@@ -81,8 +83,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Main Content */}
-        <Card className="border border-border bg-card p-8 lg:p-12 mb-12">
-          <div className="prose prose-sm sm:prose lg:prose-lg max-w-none text-foreground">
+        <Card className="border border-border bg-card text-card-foreground p-8 lg:p-12 mb-12">
+          <div className="prose prose-sm sm:prose lg:prose-lg max-w-none">
             <div
               className="space-y-6"
               dangerouslySetInnerHTML={{
@@ -90,21 +92,21 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   .split('\n')
                   .map((line) => {
                     if (line.startsWith('# ')) {
-                      return `<h1 class="text-3xl font-bold mt-8 mb-4 text-foreground">${line.replace('# ', '')}</h1>`
+                      return `<h1 class="text-3xl font-bold mt-8 mb-4">${line.replace('# ', '')}</h1>`
                     }
                     if (line.startsWith('## ')) {
-                      return `<h2 class="text-2xl font-semibold mt-6 mb-3 text-foreground">${line.replace('## ', '')}</h2>`
+                      return `<h2 class="text-2xl font-semibold mt-6 mb-3">${line.replace('## ', '')}</h2>`
                     }
                     if (line.startsWith('### ')) {
-                      return `<h3 class="text-xl font-semibold mt-4 mb-2 text-foreground">${line.replace('### ', '')}</h3>`
+                      return `<h3 class="text-xl font-semibold mt-4 mb-2">${line.replace('### ', '')}</h3>`
                     }
                     if (line.startsWith('- ')) {
-                      return `<li class="ml-6 text-muted-foreground">${line.replace('- ', '')}</li>`
+                      return `<li class="ml-6">${line.replace('- ', '')}</li>`
                     }
                     if (line.trim() === '') {
                       return '<div class="h-2"></div>'
                     }
-                    return `<p class="text-muted-foreground leading-relaxed">${line}</p>`
+                    return `<p class="leading-relaxed">${line}</p>`
                   })
                   .join(''),
               }}
@@ -122,7 +124,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Related Posts CTA */}
-        <div className="mt-16 p-8 bg-secondary rounded-lg border border-border">
+        <div className="mt-16 p-8 bg-card rounded-lg border border-border">
           <h2 className="text-xl font-semibold text-foreground mb-4">Want more insights?</h2>
           <p className="text-muted-foreground mb-6">
             Explore more articles on financial management, tax compliance, and business strategy.

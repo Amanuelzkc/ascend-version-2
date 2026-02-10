@@ -4,7 +4,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Menu, X } from "lucide-react"
+import ascend from "@/asset/ascend.png";
 
 const navigation = [
   { name: "Blog", href: "/blog" },
@@ -16,21 +18,31 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8 bg-white">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#0a0a0a] border-b border-border dark:border-white/10">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5">
-            <Image
-              src="/ascend-logo.png"
-              alt="Ascend Advisory Logo"
-              width={140}
-              height={50}
-              priority
-              className="h-12 w-auto"
-            />
+          <Link href="/" className="-m-1.5 p-1.5 flex items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 lg:h-20 lg:w-20">
+              <Image
+                src={ascend}
+                alt="Ascend Logo"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
+            <div className="flex flex-col justify-center leading-tight">
+              <span className="text-2xl font-bold tracking-tight text-foreground">
+                Ascend
+              </span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-400">
+                Finance and Advisory
+              </span>
+            </div>
           </Link>
         </div>
-        <div className="flex lg:hidden">
+        <div className="flex lg:hidden gap-2">
+          <ThemeToggle />
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -56,12 +68,13 @@ export function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <ThemeToggle />
         </div>
       </nav>
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-background border-b border-border">
+        <div className="lg:hidden bg-background dark:bg-[#0a0a0a] border-b border-border dark:border-white/10">
           <div className="space-y-1 px-6 pb-4 pt-2">
             {navigation.map((item) => (
               <Link

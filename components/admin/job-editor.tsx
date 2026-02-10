@@ -23,7 +23,8 @@ import {
   EXPERIENCE_LEVELS,
   DEFAULT_LOCATION,
 } from "@/lib/types/job"
-import { createJob, updateJob, generateSlug } from "@/lib/services/job-service"
+import { createJob, updateJob } from "@/lib/services/job-service"
+import { generateSlug } from "@/lib/utils"
 
 interface JobEditorProps {
   job: Job | null
@@ -119,7 +120,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border bg-[#21435f]">
+      <div className="border-b border-border bg-[#334155]">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-white/10 hover:text-white">
@@ -136,7 +137,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
       <div className="mx-auto max-w-4xl px-6 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Info */}
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-lg text-white">Basic Information</CardTitle>
             </CardHeader>
@@ -179,7 +180,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                     <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#21435f] text-white border-white/20">
+                    <SelectContent className="bg-[#334155] text-white border-white/20">
                       {DEPARTMENTS.map((dept) => (
                         <SelectItem key={dept} value={dept} className="focus:bg-white/10">
                           {dept}
@@ -217,7 +218,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                     <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#21435f] text-white border-white/20">
+                    <SelectContent className="bg-[#334155] text-white border-white/20">
                       {JOB_TYPES.map((type) => (
                         <SelectItem key={type} value={type} className="focus:bg-white/10">
                           {type}
@@ -238,7 +239,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                     <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#21435f] text-white border-white/20">
+                    <SelectContent className="bg-[#334155] text-white border-white/20">
                       {EXPERIENCE_LEVELS.map((level) => (
                         <SelectItem key={level} value={level} className="focus:bg-white/10">
                           {level}
@@ -286,7 +287,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
           </Card>
 
           {/* Requirements */}
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-lg text-white">Requirements</CardTitle>
             </CardHeader>
@@ -327,7 +328,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                     }
                   }}
                 />
-                <Button type="button" variant="outline" onClick={addRequirement} className="border-white/20 text-white hover:bg-white/10">
+                <Button type="button" variant="outline" onClick={addRequirement} className="border-white/20 text-white hover:bg-white/10 bg-white/5">
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
@@ -335,7 +336,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
           </Card>
 
           {/* Responsibilities */}
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-lg text-white">Responsibilities</CardTitle>
             </CardHeader>
@@ -380,7 +381,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   type="button"
                   variant="outline"
                   onClick={addResponsibility}
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="border-white/20 text-white hover:bg-white/10 bg-white/5"
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -389,7 +390,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
           </Card>
 
           {/* Publishing */}
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -405,6 +406,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                   onCheckedChange={(checked) =>
                     setFormData((prev) => ({ ...prev, published: checked }))
                   }
+                  className="data-[state=checked]:bg-white data-[state=unchecked]:bg-white/30"
                 />
               </div>
             </CardContent>
@@ -415,7 +417,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
             <Button type="button" variant="outline" onClick={onClose} className="border-white/20 text-white hover:bg-white/10 bg-transparent">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="bg-white text-[#21435f] hover:bg-white/90">
+            <Button type="submit" disabled={isLoading} className="bg-white text-[#334155] hover:bg-white/90">
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />

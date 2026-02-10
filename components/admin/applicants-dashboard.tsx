@@ -127,26 +127,26 @@ export function ApplicantsDashboard() {
           placeholder="Search by name, email, or position..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-[#21435f] border-white/20 text-white placeholder:text-white/50"
+          className="pl-10 bg-[#334155] border-white/20 text-white placeholder:text-white/50"
         />
       </div>
 
       {/* Status Tabs */}
       <Tabs value={selectedStatus} onValueChange={setSelectedStatus} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 bg-[#21435f] border border-white/20">
-          <TabsTrigger value="all" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#21435f]">
+        <TabsList className="grid w-full grid-cols-5 bg-[#334155] border border-white/20">
+          <TabsTrigger value="all" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#334155]">
             All ({statusCounts.all})
           </TabsTrigger>
-          <TabsTrigger value="new" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#21435f]">
+          <TabsTrigger value="new" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#334155]">
             New ({statusCounts.new})
           </TabsTrigger>
-          <TabsTrigger value="reviewed" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#21435f]">
+          <TabsTrigger value="reviewed" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#334155]">
             Reviewed ({statusCounts.reviewed})
           </TabsTrigger>
-          <TabsTrigger value="interview" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#21435f]">
+          <TabsTrigger value="interview" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#334155]">
             Interview ({statusCounts.interview})
           </TabsTrigger>
-          <TabsTrigger value="rejected" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#21435f]">
+          <TabsTrigger value="rejected" className="text-white data-[state=active]:bg-white data-[state=active]:text-[#334155]">
             Rejected ({statusCounts.rejected})
           </TabsTrigger>
         </TabsList>
@@ -157,7 +157,7 @@ export function ApplicantsDashboard() {
               <Loader2 className="h-8 w-8 animate-spin text-white/50" />
             </div>
           ) : filteredApplicants.length === 0 ? (
-            <Card className="border-0 text-center py-12 bg-[#21435f]">
+            <Card className="border-0 text-center py-12 bg-[#334155]">
               <CardContent className="space-y-4">
                 <AlertCircle className="h-12 w-12 text-white/40 mx-auto" />
                 <h3 className="text-lg font-semibold text-white">No applications found</h3>
@@ -168,7 +168,7 @@ export function ApplicantsDashboard() {
             filteredApplicants.map((applicant) => (
               <Card
                 key={applicant.id}
-                className="border-0 hover:shadow-lg transition-all duration-300 bg-[#21435f]"
+                className="border-0 hover:shadow-lg transition-all duration-300 bg-[#334155]"
               >
                 <CardContent className="p-0">
                   <div
@@ -294,7 +294,7 @@ export function ApplicantsDashboard() {
                               onClick={() => updateStatus(applicant.id, status)}
                               className={
                                 applicant.status === status
-                                  ? "bg-white hover:bg-white/90 text-[#21435f]"
+                                  ? "bg-white hover:bg-white/90 text-[#334155]"
                                   : "border-white/20 text-white hover:bg-white/10 bg-transparent"
                               }
                             >

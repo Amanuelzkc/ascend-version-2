@@ -11,7 +11,7 @@ import {
   FileText,
 } from "lucide-react"
 import { Insight } from "@/lib/types/insight"
-import { formatDate } from "@/lib/services/insight-service"
+import { formatDate } from "@/lib/utils"
 
 const iconMap = {
   TrendingUp,
@@ -26,7 +26,7 @@ export function InsightCard({ insight }: { insight: Insight }) {
   const Icon = iconMap[insight.icon_name] || FileText
 
   return (
-    <Card className="group overflow-hidden border border-border bg-[#21435f] hover:shadow-lg hover:border-primary hover:-translate-y-1 transition-all duration-300">
+    <Card className="group overflow-hidden border border-border bg-[#334155] hover:shadow-lg hover:border-primary hover:-translate-y-1 transition-all duration-300">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 rounded-lg p-3 bg-white/10">

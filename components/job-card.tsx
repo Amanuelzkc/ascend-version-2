@@ -22,7 +22,7 @@ export function JobCard({ job }: { job: Job }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <Card className="border border-border bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300">
+    <Card className="border border-border bg-[#334155] hover:shadow-lg hover:border-primary transition-all duration-300">
       <CardContent className="p-0">
         <div className="p-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">

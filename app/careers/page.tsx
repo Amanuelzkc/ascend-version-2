@@ -93,7 +93,7 @@ export default function CareersPage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="border-y border-border py-16 lg:py-20 bg-secondary">
+      <section className="border-y border-border py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-foreground text-center mb-12">
             Why Work at Ascend?
@@ -162,7 +162,7 @@ export default function CareersPage() {
       </section>
 
       {/* Our Values */}
-      <section className="py-16 lg:py-20 bg-secondary">
+      <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12">
             <h2 className="text-2xl font-bold text-foreground">Our Values</h2>
@@ -174,12 +174,12 @@ export default function CareersPage() {
             {values.map((value) => (
               <div
                 key={value.title}
-                className="rounded-xl border border-border p-6 bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300"
+                className="rounded-xl border border-border p-6 bg-card text-card-foreground hover:shadow-lg hover:border-primary transition-all duration-300"
               >
-                <h3 className="text-lg font-semibold text-white">
+                <h3 className="text-lg font-semibold">
                   {value.title}
                 </h3>
-                <p className="mt-2 text-sm text-white/80">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {value.description}
                 </p>
               </div>
@@ -189,20 +189,20 @@ export default function CareersPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-20 bg-secondary">
+      <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="rounded-2xl border border-border p-8 lg:p-12 text-center bg-[#21435f] hover:shadow-lg hover:border-primary transition-all duration-300">
-            <h2 className="text-2xl lg:text-3xl font-bold text-white">
+          <div className="rounded-2xl border border-border p-8 lg:p-12 text-center bg-card text-card-foreground hover:shadow-lg hover:border-primary transition-all duration-300">
+            <h2 className="text-2xl lg:text-3xl font-bold">
               {"Don't See the Right Role?"}
             </h2>
-            <p className="mt-4 mx-auto max-w-xl text-white/80">
+            <p className="mt-4 mx-auto max-w-xl text-muted-foreground">
               {
                 "We're always looking for talented individuals. Send us your CV and we'll keep you in mind for future opportunities."
               }
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">Send Your CV</Button>
-              <Button variant="outline" size="lg" className="border-border text-white hover:bg-white/10 bg-transparent">
+              <Button variant="outline" size="lg" className="border-border hover:bg-secondary bg-transparent">
                 Contact HR Team
               </Button>
             </div>

@@ -26,8 +26,8 @@ import {
   toggleInsightPublish,
   toggleInsightFeatured,
   getInsightStats,
-  formatDate,
 } from "@/lib/services/insight-service"
+import { formatDate } from "@/lib/utils"
 
 interface InsightsDashboardProps {
   onBack: () => void
@@ -119,7 +119,7 @@ export function InsightsDashboard({ onBack, onLogout }: InsightsDashboardProps) 
   return (
     <div className="min-h-screen bg-background">
       {/* Admin Header */}
-      <div className="border-b border-border bg-[#21435f]">
+      <div className="border-b border-border bg-[#334155]">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={onBack} className="text-white hover:bg-white/10 hover:text-white">
@@ -134,7 +134,7 @@ export function InsightsDashboard({ onBack, onLogout }: InsightsDashboardProps) 
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button onClick={handleCreateNew} className="bg-white text-[#21435f] hover:bg-white/90">
+            <Button onClick={handleCreateNew} className="bg-white text-[#334155] hover:bg-white/90">
               <Plus className="h-4 w-4 mr-2" />
               New Insight
             </Button>
@@ -153,7 +153,7 @@ export function InsightsDashboard({ onBack, onLogout }: InsightsDashboardProps) 
       {/* Stats */}
       <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/10">
@@ -166,7 +166,7 @@ export function InsightsDashboard({ onBack, onLogout }: InsightsDashboardProps) 
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
@@ -179,7 +179,7 @@ export function InsightsDashboard({ onBack, onLogout }: InsightsDashboardProps) 
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-500/10">
@@ -192,7 +192,7 @@ export function InsightsDashboard({ onBack, onLogout }: InsightsDashboardProps) 
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border bg-[#21435f]">
+          <Card className="border-border bg-[#334155]">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-500/10">
@@ -208,7 +208,7 @@ export function InsightsDashboard({ onBack, onLogout }: InsightsDashboardProps) 
         </div>
 
         {/* Insights List */}
-        <Card className="border-border bg-[#21435f]">
+        <Card className="border-border bg-[#334155]">
           <CardContent className="p-0">
             <div className="border-b border-white/10 px-6 py-4">
               <h2 className="font-semibold text-white">All Insights</h2>

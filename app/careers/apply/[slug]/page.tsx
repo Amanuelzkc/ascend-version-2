@@ -17,7 +17,7 @@ interface Job {
 
 export default function ApplyPage() {
   const params = useParams()
-  const slug = params.slug as string
+  const slug = params?.slug as string
   const [job, setJob] = useState<Job | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
@@ -46,7 +46,7 @@ export default function ApplyPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border" style={{ backgroundColor: '#20445c' }}>
+      <div className="border-b border-border" style={{ backgroundColor: '#334155' }}>
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-8">
           <Link href="/careers" className="inline-flex items-center gap-2 text-white hover:text-white/80 mb-4">
             <ArrowLeft className="h-4 w-4" />
@@ -74,7 +74,7 @@ export default function ApplyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Job Details Sidebar */}
             <div className="lg:col-span-1">
-              <div className="border-0 rounded-lg p-6 sticky top-20" style={{ backgroundColor: '#20445c' }}>
+              <div className="border-0 rounded-lg p-6 sticky top-20" style={{ backgroundColor: '#334155' }}>
                 <h3 className="text-lg font-semibold text-white mb-4">About This Role</h3>
                 <div className="space-y-6">
                   <div>

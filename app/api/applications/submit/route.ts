@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
+import prisma from "@/lib/prisma"
+import { writeFile } from "fs/promises"
+import { join } from "path"
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,46 +17,60 @@ export async function POST(request: NextRequest) {
     const coverLetter = formData.get("coverLetter") as string
     const resume = formData.get("resume") as File
     const jobSlug = formData.get("jobSlug") as string
-    const jobId = formData.get("jobId") as string
+    const jobIdStr = formData.get("jobId") as string
 
     // Validate required fields
-    if (!fullName || !email || !phone || !currentRole || !resume || !jobSlug) {
+    if (!fullName || !email || !phone || !currentRole || !resume || !jobIdStr) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
       )
     }
 
-    // TODO: When MySQL is ready, save application to database
-    // For now, we'll simulate the API response
-    
-    console.log("Application submitted:", {
-      fullName,
-      email,
-      phone,
-      location,
-      currentRole,
-      experience,
-      coverLetter,
-      resumeFileName: resume.name,
-      jobSlug,
-      jobId,
-      submittedAt: new Date().toISOString(),
-    })
+    const jobId = parseInt(jobIdStr)
+    if (isNaN(jobId)) {
+      return NextResponse.json({ message: "Invalid Job ID" }, { status: 400 })
+    }
 
-    // TODO: Send email notification to admin
-    // TODO: Send confirmation email to applicant
+    // Handle File Upload
+    const bytes = await resume.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+
+    // Create unique filename
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
+    const filename = `${uniqueSuffix}-${resume.name.replace(/\s+/g, "-")}`
+    const uploadDir = join(process.cwd(), "public", "uploads")
+    const filePath = join(uploadDir, filename)
+    const resumeUrl = `/uploads/${filename}`
+
+    await writeFile(filePath, buffer)
+
+    // Save to Database
+    const application = await prisma.application.create({
+      data: {
+        jobId,
+        fullName,
+        email,
+        phone,
+        location,
+        currentRole,
+        experience,
+        coverLetter,
+        resumeUrl,
+        status: "Pending", // Default status
+      },
+    })
 
     return NextResponse.json(
       {
         success: true,
         message: "Application submitted successfully",
         data: {
-          id: Math.random().toString(36).substr(2, 9),
-          fullName,
-          email,
+          id: application.id,
+          fullName: application.fullName,
+          email: application.email,
           jobSlug,
-          submittedAt: new Date().toISOString(),
+          submittedAt: application.createdAt,
         },
       },
       { status: 201 }

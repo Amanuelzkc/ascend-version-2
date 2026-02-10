@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-20">
-      <Card className="w-full max-w-md border-0" style={{ backgroundColor: '#20445c' }}>
+      <Card className="w-full max-w-md border-0" style={{ backgroundColor: '#334155' }}>
         <CardContent className="p-8">
           {/* Header */}
           <Link href="/admin" className="inline-flex items-center gap-2 text-white hover:text-white/80 mb-8">
