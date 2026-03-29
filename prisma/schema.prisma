@@ -1,77 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model application {
+  id           Int      @id @default(autoincrement())
+  jobId        Int
+  fullName     String
+  email        String
+  phone        String
+  location     String?
+  currentRole  String
+  experience   String
+  coverLetter  String?  @db.Text
+  resumeUrl    String
+  status       String   @default("Pending")
+  trackingCode String?  @unique(map: "Application_trackingCode_key")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  job          job      @relation(fields: [jobId], references: [id], map: "Application_jobId_fkey")
+
+  @@index([jobId], map: "Application_jobId_fkey")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model blogpost {
+  id           Int       @id @default(autoincrement())
+  title        String
+  slug         String    @unique(map: "BlogPost_slug_key")
+  excerpt      String    @db.Text
+  content      String    @db.Text
+  author       String
+  read_time    String
+  published    Boolean   @default(false)
+  scheduled_at DateTime?
+  image_url    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime
 }
 
-model BlogPost {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  excerpt   String   @db.Text
-  content   String   @db.Text
-  author    String
-  read_time String
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model generalapplication {
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String
+  phone        String?
+  resumeUrl    String
+  message      String?  @db.Text
+  status       String   @default("New")
+  trackingCode String?  @unique(map: "GeneralApplication_trackingCode_key")
+  createdAt    DateTime @default(now())
 }
 
-model Insight {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  excerpt   String   @db.Text
-  content   String   @db.Text
-  category  String
-  icon_name String
-  author    String
-  read_time String
-  published Boolean  @default(false)
-  featured  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model insight {
+  id           Int       @id @default(autoincrement())
+  title        String
+  slug         String    @unique(map: "Insight_slug_key")
+  excerpt      String    @db.Text
+  content      String    @db.Text
+  icon_name    String
+  author       String
+  read_time    String
+  published    Boolean   @default(false)
+  featured     Boolean   @default(false)
+  image_url    String?
+  scheduled_at DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime
 }
 
-model Job {
+model job {
   id               Int           @id @default(autoincrement())
   title            String
-  slug             String        @unique
+  slug             String        @unique(map: "Job_slug_key")
   department       String
   location         String
   type             String
   experience       String        @default("Not specified")
   description      String        @db.Text
-  requirements     String?       @db.Text // Stored as JSON string
-  responsibilities String?       @db.Text // Stored as JSON string
+  requirements     String?       @db.Text
+  responsibilities String?       @db.Text
   salary_range     String?
   published        Boolean       @default(false)
+  scheduled_at     DateTime?
   createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  applications     Application[]
+  updatedAt        DateTime
+  application      application[]
 }
 
-model Application {
-  id          Int      @id @default(autoincrement())
-  jobId       Int
-  job         Job      @relation(fields: [jobId], references: [id])
-  fullName    String
-  email       String
-  phone       String
-  location    String?
-  currentRole String
-  experience  String
-  coverLetter String?  @db.Text
-  resumeUrl   String
-  status      String   @default("Pending") // Pending, Reviewed, Interview, Rejected, Hired
-  createdAt   DateTime @default(now())
+model notification {
+  id        Int      @id @default(autoincrement())
+  type      String
+  title     String
+  message   String   @db.Text
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model user {
+  id       Int       @id @default(autoincrement())
+  username String    @unique(map: "User_username_key")
+  password String
+  name     String?
+  role     user_role @default(ADMIN)
+}
+
+enum user_role {
+  ADMIN
+  SUPERADMIN
 }

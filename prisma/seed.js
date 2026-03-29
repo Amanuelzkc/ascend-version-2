@@ -106,6 +106,19 @@ Small and medium enterprises are the backbone of Ethiopia's economy...`,
         featured: false,
         created_at: "2026-01-08T00:00:00Z",
     },
+    {
+        title: "Digital Transformation in Ethiopian Banking",
+        slug: "digital-transformation-banking",
+        excerpt: "Analyzing the shift towards digital banking services and its impact on the financial sector.",
+        content: `# Digital Transformation in Ethiopian Banking\n\nThe banking sector in Ethiopia is undergoing a rapid digital transformation...`,
+        category: "Sector Report",
+        icon_name: "Smartphone",
+        author: "Sosina Kebede",
+        read_time: "10 min read",
+        published: true,
+        featured: false,
+        created_at: "2026-01-20T00:00:00Z",
+    },
 ]
 
 const jobs = [
@@ -177,9 +190,11 @@ async function main() {
 
     // Seed Blog Posts
     for (const post of blogPosts) {
-        const createdPost = await prisma.blogPost.upsert({
+        const createdPost = await prisma.blogpost.upsert({
             where: { slug: post.slug },
-            update: {},
+            update: {
+                updatedAt: new Date(),
+            },
             create: {
                 title: post.title,
                 slug: post.slug,
@@ -189,6 +204,7 @@ async function main() {
                 read_time: post.read_time,
                 published: post.published,
                 createdAt: new Date(post.created_at),
+                updatedAt: new Date(),
             },
         })
         console.log(`Created post with id: ${createdPost.id}`)
@@ -199,7 +215,9 @@ async function main() {
         // Use upsert now that we have slug @unique
         const createdInsight = await prisma.insight.upsert({
             where: { slug: insight.slug },
-            update: {},
+            update: {
+                updatedAt: new Date(),
+            },
             create: {
                 title: insight.title,
                 slug: insight.slug,
@@ -212,6 +230,7 @@ async function main() {
                 published: insight.published,
                 featured: insight.featured,
                 createdAt: new Date(insight.created_at),
+                updatedAt: new Date(),
             }
         })
         console.log(`Created insight with id: ${createdInsight.id}`)
@@ -221,7 +240,9 @@ async function main() {
     for (const job of jobs) {
         const createdJob = await prisma.job.upsert({
             where: { slug: job.slug },
-            update: {},
+            update: {
+                updatedAt: new Date(),
+            },
             create: {
                 title: job.title,
                 slug: job.slug,
@@ -234,6 +255,7 @@ async function main() {
                 salary_range: job.salary_range,
                 published: job.published,
                 createdAt: new Date(job.created_at),
+                updatedAt: new Date(),
             },
         })
         console.log(`Created job with id: ${createdJob.id}`)

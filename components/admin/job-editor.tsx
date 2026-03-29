@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ArrowLeft, Loader2, Plus, X } from "lucide-react"
+import { ArrowLeft, Loader2, Plus, X, Calendar } from "lucide-react"
 import type { Job, CreateJobInput } from "@/lib/types/job"
 import {
   DEPARTMENTS,
@@ -36,7 +36,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
   const [formData, setFormData] = useState<CreateJobInput>({
     title: job?.title || "",
     slug: job?.slug || "",
-    department: job?.department || DEPARTMENTS[0],
+    department: job?.department || "",
     location: job?.location || DEFAULT_LOCATION,
     type: job?.type || JOB_TYPES[0],
     experience: job?.experience || EXPERIENCE_LEVELS[0],
@@ -45,7 +45,25 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
     responsibilities: job?.responsibilities || [""],
     salary_range: job?.salary_range || "",
     published: job?.published || false,
+    scheduled_at: job?.scheduled_at ?? null,
   })
+
+  const [scheduledAt, setScheduledAt] = useState<string>(() => {
+    if (!job?.scheduled_at) return ""
+    const date = new Date(job.scheduled_at)
+    const tzOffset = date.getTimezoneOffset() * 60000
+    return new Date(date.getTime() - tzOffset).toISOString().slice(0, 16)
+  })
+
+  // When a schedule is set, force published=false; when published=true, clear schedule
+  const handleSetSchedule = (value: string) => {
+    setScheduledAt(value)
+    if (value) setFormData(prev => ({ ...prev, published: false }))
+  }
+  const handleSetPublished = (checked: boolean) => {
+    setFormData(prev => ({ ...prev, published: checked }))
+    if (checked) setScheduledAt("")
+  }
 
   const [newRequirement, setNewRequirement] = useState("")
   const [newResponsibility, setNewResponsibility] = useState("")
@@ -102,6 +120,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
         ...formData,
         requirements: formData.requirements.filter((r) => r.trim()),
         responsibilities: formData.responsibilities.filter((r) => r.trim()),
+        scheduled_at: scheduledAt ? new Date(scheduledAt).toISOString() : null,
       }
 
       if (job) {
@@ -118,16 +137,21 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-10">
       {/* Header */}
-      <div className="border-b border-border bg-[#334155]">
-        <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
+      <div className="relative border-b border-border bg-white dark:bg-[#111111] py-4 transition-all duration-500">
+        <div className="mx-auto max-w-4xl px-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-white/10 hover:text-white">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="w-fit p-1 h-auto text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all duration-300 flex items-center gap-2 text-sm font-medium rounded-lg px-3 py-1"
+            >
+              <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
-            <h1 className="text-xl font-bold text-white">
+            <h1 className="text-xl font-bold text-foreground">
               {job ? "Edit Job Posting" : "Create Job Posting"}
             </h1>
           </div>
@@ -171,23 +195,19 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
 
                 <div className="space-y-2">
                   <Label htmlFor="department" className="text-white">Department</Label>
-                  <Select
+                  <Input
+                    id="department"
                     value={formData.department}
-                    onValueChange={(value) =>
-                      setFormData((prev) => ({ ...prev, department: value }))
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        department: e.target.value,
+                      }))
                     }
-                  >
-                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#334155] text-white border-white/20">
-                      {DEPARTMENTS.map((dept) => (
-                        <SelectItem key={dept} value={dept} className="focus:bg-white/10">
-                          {dept}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    placeholder="e.g., Finance, Engineering, etc."
+                    required
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -286,7 +306,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
             </CardContent>
           </Card>
 
-          {/* Requirements */}
+          {/* Requirements - content omitted for brevity as it is unchanged */}
           <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-lg text-white">Requirements</CardTitle>
@@ -335,7 +355,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
             </CardContent>
           </Card>
 
-          {/* Responsibilities */}
+          {/* Responsibilities - content omitted for brevity as it is unchanged */}
           <Card className="border-border bg-[#334155]">
             <CardHeader>
               <CardTitle className="text-lg text-white">Responsibilities</CardTitle>
@@ -391,7 +411,7 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
 
           {/* Publishing */}
           <Card className="border-border bg-[#334155]">
-            <CardContent className="p-6">
+            <CardContent className="p-6 space-y-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-semibold text-white">
@@ -403,21 +423,37 @@ export function JobEditor({ job, onClose }: JobEditorProps) {
                 </div>
                 <Switch
                   checked={formData.published}
-                  onCheckedChange={(checked) =>
-                    setFormData((prev) => ({ ...prev, published: checked }))
-                  }
+                  onCheckedChange={handleSetPublished}
                   className="data-[state=checked]:bg-white data-[state=unchecked]:bg-white/30"
                 />
+              </div>
+
+              {/* Scheduling */}
+              <div className="space-y-2 pt-2 border-t border-white/10">
+                <Label className="text-white flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  Schedule Publishing
+                </Label>
+                <Input
+                  type="datetime-local"
+                  value={scheduledAt}
+                  onChange={(e) => handleSetSchedule(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white focus:ring-white [color-scheme:dark]"
+                />
+                <p className="text-xs text-white/60">
+                  {scheduledAt && !formData.published
+                    ? `📅 Will go live on ${new Date(scheduledAt).toLocaleString()}`
+                    : formData.published
+                      ? "⚡ Published — schedule ignored"
+                      : "Leave blank to save as draft."}
+                </p>
               </div>
             </CardContent>
           </Card>
 
           {/* Actions */}
-          <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" onClick={onClose} className="border-white/20 text-white hover:bg-white/10 bg-transparent">
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading} className="bg-white text-[#334155] hover:bg-white/90">
+          <div className="flex justify-end gap-3 px-1">
+            <Button type="submit" disabled={isLoading} className="bg-[#334155] text-white hover:bg-[#334155]/90">
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />

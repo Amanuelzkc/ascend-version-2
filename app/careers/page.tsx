@@ -1,11 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { JobCard } from "@/components/job-card"
 import { Button } from "@/components/ui/button"
-import { Users, TrendingUp, Heart, BookOpen, Loader2, Briefcase } from "lucide-react"
+import { Users, TrendingUp, Heart, BookOpen, Loader2, Briefcase, ChevronDown } from "lucide-react"
 import type { Job } from "@/lib/types/job"
 import { getPublishedJobs } from "@/lib/services/job-service"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 const benefits = [
   {
@@ -15,10 +19,10 @@ const benefits = [
       "Clear progression paths and opportunities to work on diverse, challenging projects.",
   },
   {
-    icon: BookOpen,
-    title: "Learning & Development",
+    icon: Briefcase,
+    title: "Vibrant Work Environment",
     description:
-      "Support for professional certifications (ACCA, CPA, CFA) and continuous training.",
+      "A modern, professional office space designed to foster creativity and peak performance.",
   },
   {
     icon: Users,
@@ -30,7 +34,7 @@ const benefits = [
     icon: Heart,
     title: "Work-Life Balance",
     description:
-      "Flexible arrangements and a culture that values your well-being.",
+      "A culture that values your well-being and professional sustainability.",
   },
 ]
 
@@ -57,6 +61,11 @@ const values = [
 export default function CareersPage() {
   const [jobs, setJobs] = useState<Job[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [visibleCount, setVisibleCount] = useState(6)
+  const [sortBy, setSortBy] = useState<string>("recent")
+
+
 
   useEffect(() => {
     async function loadJobs() {
@@ -72,8 +81,33 @@ export default function CareersPage() {
     loadJobs()
   }, [])
 
+  const sortedJobs = [...jobs].sort((a, b) => {
+    if (sortBy === "recent") {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    }
+    if (sortBy === "title") {
+      return a.title.localeCompare(b.title)
+    }
+    if (sortBy === "department") {
+      return a.department.localeCompare(b.department)
+    }
+    return 0
+  })
+
+  const filteredJobs = sortedJobs.filter((job) =>
+    job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    job.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    job.location.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const visibleJobs = filteredJobs.slice(0, visibleCount)
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-hidden relative">
+      {/* Background Glow */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-1/4 right-0 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px] translate-x-1/2 pointer-events-none" />
+
       {/* Hero Section */}
       <section className="relative py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -120,46 +154,121 @@ export default function CareersPage() {
       </section>
 
       {/* Open Positions */}
-      <section className="py-16 lg:py-20">
+      <section id="positions" className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">
-                Open Positions
-              </h2>
-              <p className="mt-2 text-muted-foreground">
-                {isLoading
-                  ? "Loading opportunities..."
-                  : `${jobs.length} ${jobs.length === 1 ? "opportunity" : "opportunities"} available`}
-              </p>
+          <div className="bg-secondary/50 p-8 rounded-lg mb-12 shadow-sm border border-border">
+            <h2 className="text-xl font-medium text-muted-foreground mb-6">Find a job opening suited for you</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+              <div className="md:col-span-2 space-y-2">
+                <Input
+                  type="text"
+                  placeholder="Keywords"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-background border-border h-12 text-foreground placeholder:text-muted-foreground focus:ring-primary"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3 md:col-span-2">
+                <Button
+                  onClick={() => setVisibleCount(6)}
+                  className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded"
+                >
+                  Search
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setSearchQuery("")
+                    setVisibleCount(6)
+                  }}
+                  className="h-12 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded"
+                >
+                  Clear
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+              <span>Displaying 1-{Math.min(visibleJobs.length, filteredJobs.length)} of {filteredJobs.length} results</span>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="text-primary hover:underline ml-2"
+                >
+                  Filters applied (Reset)
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-4 text-sm font-medium">
+              <div className="flex items-center gap-2">
+                <span>Sort by</span>
+                <select 
+                  value={sortBy} 
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-transparent text-primary font-bold focus:outline-none cursor-pointer"
+                >
+                  <option value="recent">Date (Newest)</option>
+                  <option value="title">Title (A-Z)</option>
+                  <option value="department">Department</option>
+                </select>
+              </div>
             </div>
           </div>
 
           {isLoading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-24">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
-          ) : jobs.length === 0 ? (
-            <div className="rounded-xl border border-border bg-card p-12 text-center">
-              <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                No open positions at the moment
+          ) : filteredJobs.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border bg-muted/5 p-16 text-center">
+              <div className="mx-auto w-16 h-16 rounded-full bg-muted/10 flex items-center justify-center mb-6">
+                <Briefcase className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                {searchQuery ? "No matching jobs found" : "No open positions at the moment"}
               </h3>
               <p className="text-muted-foreground max-w-md mx-auto">
-                We don't have any openings right now, but we're always looking
-                for talented individuals. Send us your CV and we'll keep you in
-                mind for future opportunities.
+                {searchQuery
+                  ? "Try adjusting your search terms or view all open positions."
+                  : "We don't have any openings right now. Please check back later for new opportunities."}
               </p>
+              {searchQuery && (
+                <Button
+                  variant="link"
+                  onClick={() => setSearchQuery("")}
+                  className="mt-4 text-primary"
+                >
+                  View all positions
+                </Button>
+              )}
             </div>
           ) : (
-            <div className="space-y-4">
-              {jobs.map((job) => (
-                <JobCard key={job.id} job={job} />
-              ))}
-            </div>
+            <>
+              <div className="flex flex-col gap-6">
+                {visibleJobs.map((job) => (
+                  <JobCard key={job.id} job={job} />
+                ))}
+              </div>
+
+              {visibleCount < filteredJobs.length && (
+                <div className="mt-12 flex justify-center">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => setVisibleCount(prev => prev + 6)}
+                  >
+                    Load More Positions
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
+
+
 
       {/* Our Values */}
       <section className="py-16 lg:py-20">
@@ -174,12 +283,12 @@ export default function CareersPage() {
             {values.map((value) => (
               <div
                 key={value.title}
-                className="rounded-xl border border-border p-6 bg-card text-card-foreground hover:shadow-lg hover:border-primary transition-all duration-300"
+                className="rounded-xl border border-white/10 p-6 bg-[#334155] text-white hover:shadow-2xl hover:border-primary/50 hover:-translate-y-2 hover:bg-[#3d4d63] transition-all duration-300"
               >
                 <h3 className="text-lg font-semibold">
                   {value.title}
                 </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm text-white/80">
                   {value.description}
                 </p>
               </div>
@@ -188,27 +297,6 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 lg:py-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="rounded-2xl border border-border p-8 lg:p-12 text-center bg-card text-card-foreground hover:shadow-lg hover:border-primary transition-all duration-300">
-            <h2 className="text-2xl lg:text-3xl font-bold">
-              {"Don't See the Right Role?"}
-            </h2>
-            <p className="mt-4 mx-auto max-w-xl text-muted-foreground">
-              {
-                "We're always looking for talented individuals. Send us your CV and we'll keep you in mind for future opportunities."
-              }
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">Send Your CV</Button>
-              <Button variant="outline" size="lg" className="border-border hover:bg-secondary bg-transparent">
-                Contact HR Team
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

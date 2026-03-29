@@ -1,14 +1,35 @@
-import React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Noto_Sans_Ethiopic, Noto_Serif_Ethiopic, Abyssinica_SIL } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CursorGlow } from "@/components/cursor-glow"
+import { Providers } from "@/components/providers"
 import "./globals.css"
 
-const _inter = Inter({ subsets: ["latin"] })
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+})
+
+const notoEthiopic = Noto_Sans_Ethiopic({
+  subsets: ["ethiopic"],
+  variable: "--font-amharic-sans",
+  weight: ["400", "700"],
+})
+
+const notoSerifEthiopic = Noto_Serif_Ethiopic({
+  subsets: ["ethiopic"],
+  variable: "--font-amharic-serif",
+  weight: ["400", "700"],
+})
+
+const abyssinica = Abyssinica_SIL({
+  subsets: ["ethiopic"],
+  variable: "--font-amharic-abyssinica",
+  weight: ["400"],
+})
 
 export const metadata: Metadata = {
   title: "Ascend Advisory | Blog, Insights & Careers",
@@ -41,14 +62,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <CursorGlow />
-          <Header />
-          <main className="pt-[73px]">{children}</main>
-          <Footer />
-          <Analytics />
-        </ThemeProvider>
+      <body className={`${inter.variable} ${notoEthiopic.variable} ${notoSerifEthiopic.variable} ${abyssinica.variable} font-sans antialiased`}>
+        <Providers>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <CursorGlow />
+            <Header />
+            <main className="pt-[73px]">{children}</main>
+            <Footer />
+            <Analytics />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )

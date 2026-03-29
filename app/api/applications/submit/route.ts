@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { writeFile } from "fs/promises"
 import { join } from "path"
+import { application } from "@prisma/client"
+import { createAdminNotification } from "@/lib/notifications"
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,9 +46,11 @@ export async function POST(request: NextRequest) {
     const resumeUrl = `/uploads/${filename}`
 
     await writeFile(filePath, buffer)
+    const { generateTrackingCode } = require("@/lib/utils")
+    const trackingCode = generateTrackingCode()
 
     // Save to Database
-    const application = await prisma.application.create({
+    const applicationData: application = await prisma.application.create({
       data: {
         jobId,
         fullName,
@@ -57,25 +61,37 @@ export async function POST(request: NextRequest) {
         experience,
         coverLetter,
         resumeUrl,
-        status: "Pending", // Default status
+        status: "new", // Default status for new applications
+        trackingCode,
+        updatedAt: new Date(),
       },
     })
+
+    // Notify Admin
+    createAdminNotification({
+      type: "JOB_APPLICATION",
+      title: `${fullName} applied for ${jobSlug}`,
+      message: `${fullName} has submitted an application for the position of ${jobSlug}. Experience: ${experience}`,
+      link: `/admin?view=applicants` // Pointing to the applicants dashboard
+    });
 
     return NextResponse.json(
       {
         success: true,
         message: "Application submitted successfully",
         data: {
-          id: application.id,
-          fullName: application.fullName,
-          email: application.email,
+          id: applicationData.id,
+          fullName: applicationData.fullName,
+          email: applicationData.email,
           jobSlug,
-          submittedAt: application.createdAt,
+          trackingCode,
+          submittedAt: (applicationData as any).createdAt,
         },
       },
       { status: 201 }
     )
   } catch (error) {
+
     console.error("Error submitting application:", error)
     return NextResponse.json(
       { message: "Failed to submit application" },

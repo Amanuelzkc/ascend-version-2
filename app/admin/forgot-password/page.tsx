@@ -1,142 +1,70 @@
 "use client"
 
-import React from "react"
-
-import { useState } from "react"
+import React, { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-import { Mail, ArrowLeft, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Mail, ArrowLeft, CheckCircle, AlertCircle, Loader2, KeyRound, Lock, ShieldCheck, SendHorizontal, User } from "lucide-react"
+
+type ResetStep = "REQUEST" | "SENDING" | "VERIFY" | "RESET" | "SUCCESS"
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState("")
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError("")
-
-    if (!email) {
-      setError("Please enter your email address")
-      return
-    }
-
-    setIsLoading(true)
-
-    try {
-      const response = await fetch("/api/admin/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.message || "Failed to send reset email")
-      }
-
-      setSubmitted(true)
-      setEmail("")
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "An error occurred. Please try again."
-      setError(message)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-20">
-      <Card className="w-full max-w-md border-0" style={{ backgroundColor: '#334155' }}>
-        <CardContent className="p-8">
-          {/* Header */}
-          <Link href="/admin" className="inline-flex items-center gap-2 text-white hover:text-white/80 mb-8">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Login
+    <div className="flex min-h-screen items-start justify-center bg-background px-4 pt-[15vh]">
+      <Card className="w-full max-w-md border border-border bg-white dark:bg-[#111111] text-foreground shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] rounded-[2.5rem] overflow-hidden">
+        <CardHeader className="space-y-4 pt-10 pb-6 relative text-center">
+          <Link 
+            href="/admin" 
+            className="absolute left-6 top-6 h-10 w-10 flex items-center justify-center rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-5 w-5" />
           </Link>
+          
+          <div className="mx-auto h-20 w-20 rounded-3xl bg-primary/10 flex items-center justify-center mb-2">
+            <Lock className="h-10 w-10 text-primary" />
+          </div>
 
-          {submitted ? (
-            <div className="space-y-6 text-center">
-              <div className="flex justify-center mb-4">
-                <CheckCircle className="h-16 w-16 text-white" />
+          <div className="space-y-2">
+            <CardTitle className="text-3xl font-bold tracking-tight">
+              Recovery Help
+            </CardTitle>
+            <CardDescription className="text-muted-foreground font-medium px-4">
+              To keep your account secure, we do not use email-based resets. 
+              Please follow the hierarchy below:
+            </CardDescription>
+          </div>
+        </CardHeader>
+
+        <CardContent className="px-10 pb-12 space-y-8">
+          <div className="space-y-6">
+            <div className="p-6 rounded-2xl bg-muted/30 border border-border">
+              <div className="flex items-center gap-3 mb-2">
+                <User className="h-5 w-5 text-primary" />
+                <h3 className="font-bold text-sm uppercase tracking-wider">Are you an Admin?</h3>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-white mb-2">Check Your Email</h1>
-                <p className="text-white/80">
-                  We've sent a password reset link to <span className="font-semibold">{email}</span>
-                </p>
-              </div>
-              <div className="bg-white/10 border border-white/20 rounded-lg p-4">
-                <p className="text-sm text-white/80">
-                  The link will expire in 1 hour. If you don't see the email, check your spam folder or try again.
-                </p>
-              </div>
-              <Button
-                onClick={() => {
-                  setSubmitted(false)
-                  setEmail("")
-                }}
-                variant="outline"
-                className="w-full border-white/20 text-white hover:bg-white/10"
-              >
-                Send Another Email
-              </Button>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Contact your <strong>Superadmin</strong>. They can reset your password directly from their dashboard.
+              </p>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <h1 className="text-2xl font-bold text-white mb-2">Reset Password</h1>
-                <p className="text-white/80">
-                  Enter your email address and we'll send you a link to reset your password.
-                </p>
+
+            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20">
+              <div className="flex items-center gap-3 mb-2">
+                <ShieldCheck className="h-5 w-5 text-primary" />
+                <h3 className="font-bold text-sm uppercase tracking-wider">Are you a Superadmin?</h3>
               </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Contact the <strong>Master System Owner</strong>. They can use the off-grid recovery account to restore your access.
+              </p>
+            </div>
+          </div>
 
-              {error && (
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-red-500/20 border border-red-500/50">
-                  <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-red-200">{error}</p>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm font-medium text-white mb-2">
-                  Email Address
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-5 w-5 text-white/40" />
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@example.com"
-                    className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Mail className="h-4 w-4 mr-2" />
-                    Send Reset Link
-                  </>
-                )}
-              </Button>
-            </form>
-          )}
+          <Link href="/admin">
+            <Button className="w-full bg-primary text-white hover:bg-primary/90 font-bold py-7 rounded-2xl shadow-lg shadow-primary/20 transition-all uppercase tracking-widest text-sm">
+              Back to Login
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>

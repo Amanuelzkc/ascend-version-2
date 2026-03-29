@@ -10,6 +10,7 @@ function mapToInsight(insight: any): Insight {
     ...insight,
     created_at: insight.createdAt.toISOString(),
     updated_at: insight.updatedAt.toISOString(),
+    scheduled_at: insight.scheduled_at ? insight.scheduled_at.toISOString() : null,
   }
 }
 
@@ -33,13 +34,20 @@ export async function getAllInsights(): Promise<Insight[]> {
  */
 export async function getPublishedInsights(): Promise<Insight[]> {
   try {
+    const now = new Date()
     const insights = await prisma.insight.findMany({
-      where: { published: true },
+      where: {
+        published: true,
+        OR: [
+          { scheduled_at: null },
+          { scheduled_at: { lte: now } },
+        ],
+      },
       orderBy: { createdAt: "desc" },
     })
     return insights.map(mapToInsight)
-  } catch (error) {
-    console.error("Failed to fetch published insights:", error)
+  } catch (error: any) {
+    console.error("Failed to fetch published insights:", error.message, error.code)
     return []
   }
 }
@@ -50,12 +58,19 @@ export async function getPublishedInsights(): Promise<Insight[]> {
 export async function getFeaturedInsight(): Promise<Insight | null> {
   try {
     const featured = await prisma.insight.findFirst({
-      where: { published: true, featured: true },
+      where: { 
+        published: true, 
+        featured: true,
+        OR: [
+          { scheduled_at: null },
+          { scheduled_at: { lte: new Date() } },
+        ],
+      },
       orderBy: { createdAt: "desc" },
     })
     return featured ? mapToInsight(featured) : null
-  } catch (error) {
-    console.error("Failed to fetch featured insight:", error)
+  } catch (error: any) {
+    console.error("Failed to fetch featured insight:", error.message)
     return null
   }
 }
@@ -65,12 +80,20 @@ export async function getFeaturedInsight(): Promise<Insight | null> {
  */
 export async function getInsightBySlug(slug: string): Promise<Insight | null> {
   try {
+    const now = new Date()
     const insight = await prisma.insight.findFirst({
-      where: { slug, published: true },
+      where: {
+        slug,
+        published: true,
+        OR: [
+          { scheduled_at: null },
+          { scheduled_at: { lte: now } },
+        ],
+      },
     })
     return insight ? mapToInsight(insight) : null
-  } catch (error) {
-    console.error("Failed to fetch insight by slug:", error)
+  } catch (error: any) {
+    console.error("Failed to fetch insight by slug:", error.message)
     return null
   }
 }
@@ -84,8 +107,8 @@ export async function getInsightById(id: number): Promise<Insight | null> {
       where: { id },
     })
     return insight ? mapToInsight(insight) : null
-  } catch (error) {
-    console.error("Failed to fetch insight by id:", error)
+  } catch (error: any) {
+    console.error("Failed to fetch insight by id:", error.message)
     return null
   }
 }
@@ -110,13 +133,14 @@ export async function createInsight(data: CreateInsight): Promise<Insight> {
       slug: generateSlug(data.title),
       excerpt: data.excerpt,
       content: data.content,
-      category: data.category,
       icon_name: data.icon_name,
       author: data.author,
       read_time: data.read_time,
       published: data.published,
       featured: data.featured,
-    },
+      image_url: data.image_url,
+      scheduled_at: data.scheduled_at ? new Date(data.scheduled_at) : null,
+    } as any,
   })
 
   revalidatePath("/admin/insights")
@@ -147,7 +171,7 @@ export async function updateInsight(id: number, data: UpdateInsight): Promise<In
 
     const insight = await prisma.insight.update({
       where: { id },
-      data: updateData,
+      data: updateData as any,
     })
 
     revalidatePath("/admin/insights")
@@ -234,21 +258,51 @@ export async function getInsightStats(): Promise<{
   published: number
   drafts: number
   featured: number
+  scheduled: number
 }> {
   try {
     const total = await prisma.insight.count()
     const published = await prisma.insight.count({ where: { published: true } })
     const featured = await prisma.insight.count({ where: { featured: true } })
+    const scheduled = await prisma.insight.count({
+      where: {
+        published: false,
+        scheduled_at: { gt: new Date() }
+      }
+    })
     return {
       total,
       published,
-      drafts: total - published,
+      drafts: total - published - scheduled,
       featured,
+      scheduled
     }
   } catch (error) {
     console.error("Failed to get insight stats:", error)
-    return { total: 0, published: 0, drafts: 0, featured: 0 }
+    return { total: 0, published: 0, drafts: 0, featured: 0, scheduled: 0 }
   }
 }
 
-// Utility functions moved to lib/utils.ts
+/**
+ * Get related insights (recent insights excluding current)
+ */
+export async function getRelatedInsights(currentId: number, limit: number = 3): Promise<Insight[]> {
+  try {
+    const insights = await prisma.insight.findMany({
+      where: {
+        id: { not: currentId },
+        published: true,
+        OR: [
+          { scheduled_at: null },
+          { scheduled_at: { lte: new Date() } },
+        ],
+      },
+      take: limit,
+      orderBy: { createdAt: "desc" },
+    })
+    return insights.map(mapToInsight)
+  } catch (error) {
+    console.error("Failed to fetch related insights:", error)
+    return []
+  }
+}

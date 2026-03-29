@@ -13,6 +13,7 @@ function mapToJob(job: any): Job {
     responsibilities: job.responsibilities ? JSON.parse(job.responsibilities) : [],
     created_at: job.createdAt.toISOString(),
     updated_at: job.updatedAt.toISOString(),
+    scheduled_at: job.scheduled_at ? job.scheduled_at.toISOString() : null,
   }
 }
 
@@ -36,8 +37,15 @@ export async function getAllJobs(): Promise<Job[]> {
  */
 export async function getPublishedJobs(): Promise<Job[]> {
   try {
+    const now = new Date()
     const jobs = await prisma.job.findMany({
-      where: { published: true },
+      where: {
+        published: true,
+        OR: [
+          { scheduled_at: null },
+          { scheduled_at: { lte: now } },
+        ],
+      },
       orderBy: { createdAt: "desc" },
     })
     return jobs.map(mapToJob)
@@ -68,7 +76,14 @@ export async function getJobById(id: number): Promise<Job | null> {
 export async function getJobBySlug(slug: string): Promise<Job | null> {
   try {
     const job = await prisma.job.findFirst({
-      where: { slug, published: true },
+      where: { 
+        slug, 
+        published: true,
+        OR: [
+          { scheduled_at: null },
+          { scheduled_at: { lte: new Date() } },
+        ],
+      },
     })
     return job ? mapToJob(job) : null
   } catch (error) {
@@ -95,6 +110,8 @@ export async function createJob(input: CreateJobInput): Promise<Job> {
         responsibilities: JSON.stringify(input.responsibilities),
         salary_range: input.salary_range,
         published: input.published,
+        scheduled_at: input.scheduled_at ? new Date(input.scheduled_at) : null,
+        updatedAt: new Date(),
       },
     })
     revalidatePath("/admin/jobs")
@@ -121,6 +138,9 @@ export async function updateJob(input: UpdateJobInput): Promise<Job | null> {
       updateData.responsibilities = JSON.stringify(input.responsibilities)
     }
 
+    // Add updatedAt
+    updateData.updatedAt = new Date()
+
     // Remove id from data
     delete updateData.id
 
@@ -143,6 +163,11 @@ export async function updateJob(input: UpdateJobInput): Promise<Job | null> {
  */
 export async function deleteJob(id: number): Promise<boolean> {
   try {
+    // Delete related applications first to resolve foreign key constraints
+    await prisma.application.deleteMany({
+      where: { jobId: id },
+    })
+
     await prisma.job.delete({
       where: { id },
     })
@@ -165,7 +190,10 @@ export async function toggleJobPublished(id: number): Promise<Job | null> {
 
     const updated = await prisma.job.update({
       where: { id },
-      data: { published: !job.published },
+      data: { 
+        published: !job.published,
+        updatedAt: new Date(),
+      },
     })
 
     revalidatePath("/admin/jobs")
@@ -184,11 +212,17 @@ export async function getJobStats(): Promise<{
   total: number
   published: number
   drafts: number
+  scheduled: number
   byDepartment: Record<string, number>
 }> {
   try {
     const jobs = await prisma.job.findMany()
-    const published = jobs.filter((j: any) => j.published).length
+    const now = new Date()
+    
+    const published = jobs.filter((j: any) => j.published && (!j.scheduled_at || new Date(j.scheduled_at) <= now)).length
+    const scheduled = jobs.filter((j: any) => j.scheduled_at && new Date(j.scheduled_at) > now).length
+    const drafts = jobs.filter((j: any) => !j.published && (!j.scheduled_at || new Date(j.scheduled_at) <= now)).length
+
     const byDepartment: Record<string, number> = {}
 
     for (const job of jobs) {
@@ -198,7 +232,8 @@ export async function getJobStats(): Promise<{
     return {
       total: jobs.length,
       published,
-      drafts: jobs.length - published,
+      drafts,
+      scheduled,
       byDepartment,
     }
   } catch (error) {
@@ -207,6 +242,7 @@ export async function getJobStats(): Promise<{
       total: 0,
       published: 0,
       drafts: 0,
+      scheduled: 0,
       byDepartment: {},
     }
   }

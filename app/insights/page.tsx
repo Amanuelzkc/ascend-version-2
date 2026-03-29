@@ -4,7 +4,18 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { InsightCard } from "@/components/insight-card"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import {
+  TrendingUp,
+  Search,
+  Loader2,
+  Calendar,
+  Clock,
+  CheckCircle,
+  ChevronDown,
+  ArrowRight,
+  User
+} from "lucide-react"
+import { Input } from "@/components/ui/input"
 import { Insight } from "@/lib/types/insight"
 import {
   getPublishedInsights,
@@ -12,17 +23,12 @@ import {
 } from "@/lib/services/insight-service"
 import { formatDate } from "@/lib/utils"
 
-const stats = [
-  { label: "Research Reports Published", value: "50+" },
-  { label: "Industries Analyzed", value: "12" },
-  { label: "Years of Market Data", value: "10+" },
-  { label: "Expert Contributors", value: "15" },
-]
-
 export default function InsightsPage() {
   const [insights, setInsights] = useState<Insight[]>([])
   const [featuredInsight, setFeaturedInsight] = useState<Insight | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [visibleCount, setVisibleCount] = useState(4)
 
   useEffect(() => {
     async function loadInsights() {
@@ -43,10 +49,21 @@ export default function InsightsPage() {
     loadInsights()
   }, [])
 
+  const filteredInsights = insights.filter((insight) =>
+    insight.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    insight.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const visibleInsights = filteredInsights.slice(0, visibleCount)
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-hidden relative">
+      {/* Background Glow */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-1/4 right-0 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px] translate-x-1/2 pointer-events-none" />
+
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-28">
+      <section className="relative pt-20 pb-10 lg:pt-28 lg:pb-14">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <span className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
@@ -63,22 +80,6 @@ export default function InsightsPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="border-y border-border">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-3xl font-bold text-primary">{stat.value}</p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {isLoading ? (
         <div className="flex items-center justify-center py-24">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -87,63 +88,95 @@ export default function InsightsPage() {
         <>
           {/* Featured Insight */}
           {featuredInsight && (
-            <section className="py-16 lg:py-20">
+            <section className="pt-8 pb-16 lg:pt-10 lg:pb-20">
               <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <h2 className="text-2xl font-bold text-foreground mb-8">
                   Featured Insight
                 </h2>
-                <div className="relative overflow-hidden rounded-2xl border border-border p-8 lg:p-12 bg-card text-card-foreground hover:shadow-lg hover:border-primary transition-all duration-300">
-                  <div className="relative max-w-2xl">
-                    <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                      {featuredInsight.category}
-                    </span>
-                    <h3 className="mt-4 text-2xl lg:text-3xl font-bold">
-                      {featuredInsight.title}
-                    </h3>
-                    <p className="mt-4 text-muted-foreground leading-relaxed">
-                      {featuredInsight.excerpt}
-                    </p>
-                    <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                      <span>{featuredInsight.author}</span>
-                      <span className="hidden sm:inline">•</span>
-                      <span>{formatDate(featuredInsight.created_at)}</span>
-                      <span className="hidden sm:inline">•</span>
-                      <span>{featuredInsight.read_time}</span>
-                    </div>
-                    <Button asChild className="mt-8 bg-primary hover:bg-primary/90 text-primary-foreground">
-                      <Link href={`/insights/${featuredInsight.slug}`}>Read Full Report</Link>
-                    </Button>
-                  </div>
-                </div>
+                <InsightCard insight={featuredInsight} isFeatured={true} />
               </div>
             </section>
           )}
 
-          {/* Insights Grid */}
-          <section className="py-16 lg:py-20">
+          {/* Insights Grid Header & Search */}
+          <section id="latest" className="py-16 pb-8">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <h2 className="text-2xl font-bold text-foreground mb-8">
-                Latest Research
-              </h2>
-              {insights.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">
-                    No insights published yet. Check back soon!
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                <div>
+                  <h2 className="text-3xl font-bold text-foreground">
+                    Latest Research
+                  </h2>
+                  <p className="mt-2 text-muted-foreground text-sm">
+                    {searchQuery ? `Search results for "${searchQuery}"` : "Browse our latest market analysis and reports"}
                   </p>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  {insights.map((insight) => (
-                    <InsightCard key={insight.id} insight={insight} />
-                  ))}
+                <div className="relative w-full md:max-w-md">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Search insights by title, category, or content..."
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value)
+                      setVisibleCount(4) // Reset pagination on search
+                    }}
+                    className="pl-10 bg-muted/50 dark:bg-white/5 border-border dark:border-white/10 text-foreground placeholder:text-muted-foreground focus:ring-primary h-11"
+                  />
                 </div>
+              </div>
+
+              {filteredInsights.length === 0 ? (
+                <div className="text-center py-24 rounded-2xl border border-dashed border-border bg-muted/5">
+                  <div className="mx-auto w-12 h-12 rounded-full bg-muted/10 flex items-center justify-center mb-4">
+                    <Search className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <p className="text-lg font-medium text-foreground">No matches found</p>
+                  <p className="text-muted-foreground mt-1">
+                    Try adjusting your search terms or filters
+                  </p>
+                  <Button
+                    variant="link"
+                    onClick={() => setSearchQuery("")}
+                    className="mt-4 text-primary"
+                  >
+                    Clear Search
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {visibleInsights.map((insight) => (
+                      <InsightCard key={insight.id} insight={insight} />
+                    ))}
+                  </div>
+
+                  {visibleCount < filteredInsights.length ? (
+                    <div className="mt-12 flex justify-center">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={() => setVisibleCount(prev => prev + 4)}
+                      >
+                        Load More Reports
+                      </Button>
+                    </div>
+                  ) : filteredInsights.length > 4 && (
+                    <div className="mt-12 flex justify-center">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={() => setVisibleCount(4)}
+                      >
+                        Show Less
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </section>
         </>
       )}
-
-
     </div>
   )
 }

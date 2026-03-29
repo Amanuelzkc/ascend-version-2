@@ -18,7 +18,9 @@ interface JobApplicationFormProps {
 export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [trackingCode, setTrackingCode] = useState("")
   const [error, setError] = useState("")
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -96,7 +98,10 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
         throw new Error(data.message || "Failed to submit application")
       }
 
+      const result = await response.json()
+      setTrackingCode(result.data.trackingCode || "")
       setSubmitted(true)
+      window.scrollTo({ top: 0, behavior: "smooth" })
       setFormData({
         fullName: "",
         email: "",
@@ -121,24 +126,25 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
 
   if (submitted) {
     return (
-      <Card className="border-0 max-w-2xl mx-auto bg-[#334155]">
-        <CardContent className="p-8">
+      <Card className="border border-border max-w-2xl mx-auto bg-white dark:bg-[#111111] text-foreground shadow-2xl rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:shadow-primary/5">
+        <CardContent className="p-10 lg:p-12">
           <div className="text-center">
-            <div className="flex justify-center mb-6">
-              <CheckCircle className="h-16 w-16 text-white" />
+            <div className="flex justify-center mb-8">
+              <div className="h-24 w-24 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
+                <CheckCircle className="h-12 w-12 text-primary" />
+              </div>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3">Application Submitted!</h3>
-            <p className="text-white/80 mb-6">
-              Thank you for applying for the {jobTitle} position. We've received your application and will review it shortly.
+            <h3 className="text-3xl font-bold text-foreground mb-4">Application Submitted!</h3>
+            <div className="bg-muted/50 rounded-2xl p-8 mb-8 border border-border shadow-inner">
+              <p className="text-foreground/80 font-medium leading-relaxed">
+                Thank you for applying for the <span className="text-primary font-bold">{jobTitle}</span> position. We've received your application and will review it shortly.
+              </p>
+            </div>
+            <p className="text-muted-foreground text-sm mb-10">
+              We'll contact you at <span className="font-semibold text-foreground">{formData.email}</span> if we'd like to move forward.
             </p>
-            <p className="text-white/70 text-sm mb-8">
-              We'll contact you at {formData.email} if we'd like to move forward with your application.
-            </p>
-            <Button
-              onClick={() => setSubmitted(false)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground"
-            >
-              Submit Another Application
+            <Button asChild variant="outline" className="rounded-full px-8 py-6 h-auto font-bold tracking-wide uppercase text-xs">
+              <a href="/careers">Return to Careers</a>
             </Button>
           </div>
         </CardContent>
@@ -147,25 +153,29 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
   }
 
   return (
-    <Card className="border-0 max-w-2xl mx-auto bg-[#334155]">
-      <CardContent className="p-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-2">Apply for Position</h2>
-          <p className="text-white/80">{jobTitle}</p>
+    <Card className="border border-border max-w-2xl mx-auto bg-white dark:bg-[#111111] text-foreground shadow-2xl rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:shadow-primary/5">
+      <CardContent className="p-10 lg:p-12">
+        <div className="mb-10 lg:mb-12">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Join Our Team</span>
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-3 tracking-tight">Apply for Position</h2>
+          <p className="text-lg text-muted-foreground font-medium">{jobTitle}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
           {error && (
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-red-500/20 border border-red-500/50">
-              <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-red-200">{error}</p>
+            <div className="flex items-start gap-3 p-5 rounded-2xl bg-destructive/10 border border-destructive/20 animate-in fade-in slide-in-from-top-4">
+              <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-destructive font-medium">{error}</p>
             </div>
           )}
 
           {/* Full Name */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Full Name <span className="text-red-400">*</span>
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
+              Full Name <span className="text-destructive">*</span>
             </label>
             <Input
               type="text"
@@ -173,15 +183,15 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
               value={formData.fullName}
               onChange={handleInputChange}
               placeholder="John Doe"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
+              className="h-12 bg-muted/30 border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/50 focus:ring-primary/20 focus:bg-background transition-all"
               disabled={isSubmitting}
             />
           </div>
 
           {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Email Address <span className="text-red-400">*</span>
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
+              Email Address <span className="text-destructive">*</span>
             </label>
             <Input
               type="email"
@@ -189,78 +199,82 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
               value={formData.email}
               onChange={handleInputChange}
               placeholder="john@example.com"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
+              className="h-12 bg-muted/30 border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/50 focus:ring-primary/20 focus:bg-background transition-all"
               disabled={isSubmitting}
             />
           </div>
 
-          {/* Phone */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Phone Number <span className="text-red-400">*</span>
-            </label>
-            <Input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              placeholder="+251 9XX XXX XXXX"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
-              disabled={isSubmitting}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Phone */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                Phone Number <span className="text-destructive">*</span>
+              </label>
+              <Input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="+251 9XX XXX XXXX"
+                className="h-12 bg-muted/30 border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/50 focus:ring-primary/20 focus:bg-background transition-all"
+                disabled={isSubmitting}
+              />
+            </div>
+
+            {/* Location */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                Location
+              </label>
+              <Input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                placeholder="Addis Ababa, Ethiopia"
+                className="h-12 bg-muted/30 border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/50 focus:ring-primary/20 focus:bg-background transition-all"
+                disabled={isSubmitting}
+              />
+            </div>
           </div>
 
-          {/* Location */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Current Location
-            </label>
-            <Input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              placeholder="Addis Ababa, Ethiopia"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
-              disabled={isSubmitting}
-            />
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Current Role */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                Current Role/Position <span className="text-destructive">*</span>
+              </label>
+              <Input
+                type="text"
+                name="currentRole"
+                value={formData.currentRole}
+                onChange={handleInputChange}
+                placeholder="e.g., Senior Accountant"
+                className="h-12 bg-muted/30 border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/50 focus:ring-primary/20 focus:bg-background transition-all"
+                disabled={isSubmitting}
+              />
+            </div>
 
-          {/* Current Role */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Current Role/Position <span className="text-red-400">*</span>
-            </label>
-            <Input
-              type="text"
-              name="currentRole"
-              value={formData.currentRole}
-              onChange={handleInputChange}
-              placeholder="e.g., Senior Accountant"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
-              disabled={isSubmitting}
-            />
-          </div>
-
-          {/* Experience */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Years of Experience
-            </label>
-            <Input
-              type="text"
-              name="experience"
-              value={formData.experience}
-              onChange={handleInputChange}
-              placeholder="e.g., 5+ years"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white"
-              disabled={isSubmitting}
-            />
+            {/* Experience */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                Experience
+              </label>
+              <Input
+                type="text"
+                name="experience"
+                value={formData.experience}
+                onChange={handleInputChange}
+                placeholder="e.g., 5+ years"
+                className="h-12 bg-muted/30 border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/50 focus:ring-primary/20 focus:bg-background transition-all"
+                disabled={isSubmitting}
+              />
+            </div>
           </div>
 
           {/* Cover Letter */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
               Cover Letter
             </label>
             <Textarea
@@ -269,17 +283,17 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
               onChange={handleInputChange}
               placeholder="Tell us why you're a great fit for this role..."
               rows={4}
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-white resize-none"
+              className="bg-muted/30 border-border rounded-2xl p-4 text-foreground placeholder:text-muted-foreground/50 focus:ring-primary/20 focus:bg-background transition-all resize-none"
               disabled={isSubmitting}
             />
           </div>
 
           {/* Resume Upload */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Resume/CV <span className="text-red-400">*</span>
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
+              Resume/CV <span className="text-destructive">*</span>
             </label>
-            <div className="relative">
+            <div className="relative group">
               <input
                 type="file"
                 name="resume"
@@ -291,14 +305,57 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
               />
               <label
                 htmlFor="resume-upload"
-                className="flex items-center justify-center gap-3 p-6 border-2 border-dashed border-white/30 rounded-lg hover:border-white/50 cursor-pointer transition-colors bg-white/5"
+                className={`flex items-center justify-center gap-4 p-10 border-2 border-dashed rounded-[2rem] cursor-pointer transition-all duration-300 bg-muted/20 ${formData.resume
+                  ? "border-primary bg-primary/5 ring-4 ring-primary/5"
+                  : "border-border hover:border-primary/50 hover:bg-muted/40"
+                  }`}
+                onDragOver={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  e.currentTarget.classList.add('border-primary/50', 'bg-muted/40')
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  e.currentTarget.classList.remove('border-primary/50', 'bg-muted/40')
+                }}
+                onDrop={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  e.currentTarget.classList.remove('border-primary/50', 'bg-muted/40')
+
+                  const file = e.dataTransfer.files?.[0]
+                  if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                      setError("Resume must be less than 5MB")
+                      return
+                    }
+                    const validTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
+                    if (!validTypes.includes(file.type)) {
+                      setError("Please upload a PDF or Word document")
+                      return
+                    }
+                    setError("")
+                    setFormData((prev) => ({ ...prev, resume: file }))
+                  }
+                }}
               >
-                <Upload className="h-5 w-5 text-white/70" />
-                <div className="text-center">
-                  <p className="text-sm font-medium text-white">
-                    {formData.resume ? formData.resume.name : "Click to upload or drag and drop"}
-                  </p>
-                  <p className="text-xs text-white/60">PDF or Word document (max 5MB)</p>
+                <div className="flex flex-col items-center">
+                  <div className={`h-16 w-16 rounded-2xl flex items-center justify-center mb-4 transition-colors ${formData.resume ? "bg-primary text-white" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary text-card"}`}>
+                    <Upload className="h-8 w-8" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-bold text-foreground mb-1">
+                      {formData.resume ? formData.resume.name : "Choose File or Drag & Drop"}
+                    </p>
+                    <p className="text-xs text-muted-foreground font-medium">
+                      {formData.resume ? (
+                        <span className="text-primary font-bold">Ready to upload</span>
+                      ) : (
+                        "PDF or Docx (max 5MB)"
+                      )}
+                    </p>
+                  </div>
                 </div>
               </label>
             </div>
@@ -308,12 +365,12 @@ export function JobApplicationForm({ jobTitle, jobId, jobSlug }: JobApplicationF
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="w-full bg-primary text-white hover:bg-primary/90 font-bold py-8 text-lg rounded-[1.5rem] shadow-xl shadow-primary/20 transition-all duration-300 active:scale-[0.98] uppercase tracking-widest"
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Submitting...
+                <Loader2 className="h-6 w-6 mr-3 animate-spin text-white" />
+                Processing...
               </>
             ) : (
               "Submit Application"

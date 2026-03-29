@@ -6,9 +6,11 @@ export interface BlogPost {
   slug: string
   excerpt: string
   content: string
-  author: string
-  read_time: string
+  author: string;
+  read_time: string;
   published: boolean
+  scheduled_at?: string | null
+  image_url?: string;
   created_at: string
   updated_at: string
 }
@@ -22,6 +24,8 @@ export interface CreateBlogPost {
   author: string
   read_time: string
   published: boolean
+  scheduled_at?: string | null
+  image_url?: string
 }
 
 // For updating posts
@@ -30,16 +34,9 @@ export interface UpdateBlogPost {
   slug?: string
   excerpt?: string
   content?: string
-  author?: string
-  read_time?: string
-  published?: boolean
+  author?: string;
+  read_time?: string;
+  published?: boolean;
+  scheduled_at?: string | null
+  image_url?: string
 }
-
-// Authors list - could also be a separate table
-export const AUTHORS = [
-  "Bemnet Abebe",
-  "Betelhem Desalegn", 
-  "Sosina Kebede"
-] as const
-
-export type Author = typeof AUTHORS[number]

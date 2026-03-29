@@ -14,6 +14,7 @@ export interface Job {
   responsibilities: string[] // Stored as JSON in MySQL
   salary_range?: string // Optional
   published: boolean
+  scheduled_at?: string | null
   created_at: string
   updated_at: string
 }
@@ -30,6 +31,7 @@ export interface CreateJobInput {
   responsibilities: string[]
   salary_range?: string
   published: boolean
+  scheduled_at?: string | null
 }
 
 export interface UpdateJobInput extends Partial<CreateJobInput> {

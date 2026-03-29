@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Menbere:wght@400;700&family=Gurzada&family=Kafiyl&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #f8f9fa;
@@ -29,6 +30,7 @@
   --chart-4: #8b5cf6;
   --chart-5: #ec4899;
   --radius: 0.625rem;
+  --gold-accent: #D4AF37;
   --sidebar: #ffffff;
   --sidebar-foreground: #1a2332;
   --sidebar-primary: #1e5a7c;
@@ -42,7 +44,7 @@
 .dark {
   --background: #0a0a0a;
   --foreground: #f1f5f9;
-  --card: #3b4a5c;
+  --card: #334155;
   --card-foreground: #f1f5f9;
   --popover: #1e293b;
   --popover-foreground: #f1f5f9;
@@ -75,7 +77,13 @@
 }
 
 @theme inline {
-  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --font-sans: var(--font-inter), var(--font-amharic-sans), 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --font-amharic-sans: var(--font-amharic-sans), 'Noto Sans Ethiopic', sans-serif;
+  --font-amharic-serif: var(--font-amharic-serif), 'Noto Serif Ethiopic', serif;
+  --font-amharic-menbere: 'Menbere', serif;
+  --font-amharic-abyssinica: var(--font-amharic-abyssinica), 'Abyssinica SIL', serif;
+  --font-amharic-gurzada: 'Gurzada', serif;
+  --font-amharic-kafiyl: 'Kafiyl', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -123,4 +131,334 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  body.no-distraction header,
+  body.no-distraction footer {
+    display: none !important;
+  }
+
+  body.no-distraction main {
+    padding-top: 0 !important;
+  }
+
+  body.admin-nav-hidden main {
+    padding-top: 0 !important;
+  }
+
+  body.admin-nav-hidden .editor-toolbar {
+    top: 0 !important;
+  }
+}
+
+/* Rich Text Editor Content Styles */
+.blog-content h1 {
+  @apply text-3xl font-bold mt-8 mb-4;
+}
+
+.blog-content h2 {
+  @apply text-2xl font-semibold mt-6 mb-3;
+}
+
+.blog-content h3 {
+  @apply text-xl font-semibold mt-4 mb-2;
+}
+
+.blog-content ul {
+  @apply list-disc pl-6 mb-4 space-y-2;
+}
+
+.blog-content ol {
+  @apply list-decimal pl-6 mb-4 space-y-2;
+}
+
+.blog-content li {
+  @apply mb-1;
+}
+
+.blog-content a {
+  @apply text-primary underline hover:text-primary/80;
+}
+
+.blog-content img {
+  @apply max-w-full h-auto rounded-lg my-6;
+}
+
+/* Video Support Styles */
+.blog-content div[data-video="true"] {
+  @apply relative aspect-video bg-slate-900 rounded-xl overflow-hidden my-8 cursor-pointer border border-white/10 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99];
+  background-image: linear-gradient(to bottom right, #1e293b, #0f172a);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Dark overlay when thumbnail is present so play button stays legible */
+.blog-content div[data-video="true"].has-thumbnail::after {
+  content: '';
+  @apply absolute inset-0 bg-black/40 z-0;
+}
+
+.blog-content .video-play-button {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white/20 border-2 border-white rounded-full flex items-center justify-center transition-all z-10;
+  backdrop-filter: blur(4px);
+}
+
+.blog-content .video-play-button::after {
+  content: '';
+  @apply ml-1 w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-l-[16px] border-l-white;
+}
+
+.blog-content div[data-video="true"]:hover .video-play-button {
+  @apply scale-110 bg-white/30;
+}
+
+/* Placeholder text (only when no thumbnail) */
+.blog-content div[data-video="true"]:not(.has-thumbnail)::before {
+  content: 'Premium Video Content';
+  @apply absolute bottom-6 left-0 right-0 text-center text-slate-400 font-medium text-sm z-0;
+}
+
+/* Video Alignment & Sizing */
+.blog-content div[data-video="true"][style*="float: left"] {
+  @apply mr-6 mb-4 mt-2 max-md:float-none max-md:mx-auto max-md:block;
+}
+
+.blog-content div[data-video="true"][style*="float: right"] {
+  @apply ml-6 mb-4 mt-2 max-md:float-none max-md:mx-auto max-md:block;
+}
+
+.blog-content div[data-video="true"][style*="margin-left: auto"][style*="margin-right: auto"] {
+  @apply block mx-auto;
+}
+
+/* Enhanced Rich Text Features */
+.blog-content img[style*="float: left"] {
+  @apply mr-6 mb-4 mt-2 max-md:float-none max-md:mx-auto max-md:block;
+}
+
+.blog-content img[style*="float: right"] {
+  @apply ml-6 mb-4 mt-2 max-md:float-none max-md:mx-auto max-md:block;
+}
+
+.blog-content img[style*="margin-left: auto"][style*="margin-right: auto"] {
+  @apply block mx-auto;
+}
+
+.blog-content p {
+  @apply mb-4 leading-relaxed;
+}
+
+.blog-content blockquote {
+  @apply border-l-4 border-primary pl-4 italic my-6 text-muted-foreground bg-primary/5 py-4 pr-4 rounded-r-lg;
+}
+
+.blog-content strong {
+  @apply font-bold;
+}
+
+.blog-content em {
+  @apply italic;
+}
+
+.blog-content u {
+  @apply underline;
+}
+
+.blog-content s {
+  @apply line-through;
+}
+
+/* Table Styles */
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.blog-content table td,
+.blog-content table th {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog-content table th {
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.blog-content table tr:nth-child(even) td {
+  background-color: color-mix(in srgb, var(--border) 30%, transparent);
+}
+
+.blog-content table tr:hover td {
+  background-color: color-mix(in srgb, var(--primary) 5%, transparent);
+}
+
+/* Reading Mode Settings */
+[data-reading-distraction-free="true"] header,
+[data-reading-distraction-free="true"] footer,
+[data-reading-distraction-free="true"] .share-section,
+[data-reading-distraction-free="true"] .related-section,
+[data-reading-distraction-free="true"] .back-button {
+  display: none !important;
+}
+
+[data-reading-distraction-free="true"] main {
+  padding-top: 2rem !important;
+}
+
+/* Reading Themes */
+[data-reading-theme="sepia"] {
+  --background: #f4ecd8;
+  --foreground: #5b4636;
+  --border: #e2d7c0;
+}
+
+[data-reading-theme="sepia"] body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+[data-reading-theme="sepia"] .blog-content p,
+[data-reading-theme="sepia"] .blog-content h1,
+[data-reading-theme="sepia"] .blog-content h2,
+[data-reading-theme="sepia"] .blog-content h3 {
+  color: #5b4636 !important;
+}
+
+[data-reading-theme="sepia"] article h1 {
+  color: #2c2216 !important;
+}
+
+[data-reading-theme="sepia"] .blog-content {
+  color: #433422;
+}
+
+[data-reading-theme="sepia"] .blog-content h1,
+[data-reading-theme="sepia"] .blog-content h2,
+[data-reading-theme="sepia"] .blog-content h3,
+[data-reading-theme="sepia"] .blog-content h4,
+[data-reading-theme="sepia"] .blog-content h5,
+[data-reading-theme="sepia"] .blog-content h6,
+[data-reading-theme="sepia"] .blog-content strong,
+[data-reading-theme="sepia"] .blog-content b {
+  color: #2c2216;
+}
+
+/* Fix for invisible text: forces white/off-white text to inherit the correct color in light and sepia modes */
+html:not(.dark) .blog-content span[style*="rgb(242, 242, 242)"],
+html:not(.dark) .blog-content span[style*="rgb(255, 255, 255)"],
+html:not(.dark) .blog-content span[style*="#FFF"],
+html:not(.dark) .blog-content span[style*="#fff"],
+html:not(.dark) .blog-content span[style*="#f2f2f2"],
+html:not(.dark) .blog-content span[style*="#F2F2F2"],
+[data-reading-theme="sepia"] .blog-content span[style*="rgb(242, 242, 242)"],
+[data-reading-theme="sepia"] .blog-content span[style*="rgb(255, 255, 255)"],
+[data-reading-theme="sepia"] .blog-content span[style*="#FFF"],
+[data-reading-theme="sepia"] .blog-content span[style*="#fff"],
+[data-reading-theme="sepia"] .blog-content span[style*="#f2f2f2"],
+[data-reading-theme="sepia"] .blog-content span[style*="#F2F2F2"] {
+  color: inherit !important;
+}
+
+/* Reading Font Sizes */
+[data-reading-size="normal"] .blog-content {
+  font-size: 1rem;
+}
+
+[data-reading-size="large"] .blog-content {
+  font-size: 1.25rem;
+}
+
+[data-reading-size="xl"] .blog-content {
+  font-size: 1.5rem;
+}
+
+/* Reading Fonts */
+/* Reading Fonts */
+html[data-reading-font="serif"] .blog-content,
+html[data-reading-font="serif"] .blog-content * {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !important;
+}
+
+html[data-reading-font="serif"] .blog-content {
+  line-height: 1.8;
+}
+
+html[data-reading-font="mono"] .blog-content,
+html[data-reading-font="mono"] .blog-content * {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
+html[data-reading-font="mono"] .blog-content {
+  line-height: 1.7;
+}
+
+html[data-reading-font="amharic-sans"] .blog-content,
+html[data-reading-font="amharic-sans"] .blog-content * {
+  font-family: var(--font-amharic-sans) !important;
+}
+
+html[data-reading-font="amharic-sans"] .blog-content {
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+html[data-reading-font="amharic-serif"] .blog-content,
+html[data-reading-font="amharic-serif"] .blog-content * {
+  font-family: var(--font-amharic-serif) !important;
+}
+
+html[data-reading-font="amharic-serif"] .blog-content {
+  line-height: 1.9;
+}
+
+html[data-reading-font="amharic-menbere"] .blog-content,
+html[data-reading-font="amharic-menbere"] .blog-content * {
+  font-family: var(--font-amharic-menbere) !important;
+}
+
+html[data-reading-font="amharic-menbere"] .blog-content {
+  line-height: 1.8;
+}
+
+html[data-reading-font="amharic-abyssinica"] .blog-content,
+html[data-reading-font="amharic-abyssinica"] .blog-content * {
+  font-family: var(--font-amharic-abyssinica) !important;
+}
+
+html[data-reading-font="amharic-abyssinica"] .blog-content {
+  line-height: 2;
+}
+
+html[data-reading-font="amharic-gurzada"] .blog-content,
+html[data-reading-font="amharic-gurzada"] .blog-content * {
+  font-family: var(--font-amharic-gurzada) !important;
+}
+
+html[data-reading-font="amharic-gurzada"] .blog-content {
+  line-height: 1.8;
+}
+
+html[data-reading-font="amharic-kafiyl"] .blog-content,
+html[data-reading-font="amharic-kafiyl"] .blog-content * {
+  font-family: var(--font-amharic-kafiyl) !important;
+}
+
+html[data-reading-font="amharic-kafiyl"] .blog-content {
+  line-height: 1.8;
+}
+
+[data-reading-font^="amharic-"] .blog-content p {
+  margin-bottom: 1.5rem;
+}
+
+[data-reading-size="large"] .blog-content p,
+[data-reading-size="xl"] .blog-content p {
+  line-height: 1.8;
 }
